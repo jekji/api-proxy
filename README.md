@@ -1,7 +1,7 @@
-## install
+## custom install
 
 ```bash
-yarn add next@latest react@latest react-dom@latest
+npm add next@latest react@latest react-dom@latest
 ```
 
 Then, add the following scripts to your package.json file:
@@ -15,4 +15,10 @@ Then, add the following scripts to your package.json file:
     "lint": "next lint"
   }
 }
+```
+
+## vercel install
+
+```
+vercel deploy --prod
 ```
