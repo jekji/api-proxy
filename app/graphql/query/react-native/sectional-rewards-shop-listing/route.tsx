@@ -1,0 +1,43 @@
+import { NextResponse } from 'next/server';
+
+/**
+:method: POST
+:path: /graphql/query/react-native/sectional-rewards-shop-listing
+:authority: www.dream11.com
+:scheme: https
+accept: application/json
+device: androidplaystore
+devicetype: ANDROID
+deviceid: 2d016ea7f014d06c
+ek1: 1baaed3d74f4a9d3e015539e9e57e52e3628b5eacd96f7e4fb42be4ef92153d9
+ek2: 1baaed3d74f4a9d3e015539e9e57e52e3628b5eacd96f7e4fb42be4ef92153d9
+x-manufacturer: google
+x-os-version: 16
+x-os-type: android
+x-app-version-name: 750
+app_version: 7.5.0
+a1: b4581fbf01c51d18e8c85cc70ed1b60f7e4467ade5695bfbc25b50e5b0cc84f5
+version: 10045
+user-agent: Dream11/7.5.0 (Linux; Android 36; Pixel 6a) Build/10045
+siteid: 1
+locale: en-US
+authorization: Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsInR5cCI6ImF0K2p3dCIsImtpZCI6IlRqb0FsLVdyZWN3Z3MtZVVvcm5xWWE5Y2x4dyJ9.eyJhdWQiOiJhOEVzRGxQYzNaQ1Znc1VwcHB1YyIsImV4cCI6MTc3MzY3NzY5NiwiaWF0IjoxNzczNTkxMjk2LCJpc3MiOiJkcmVhbTExLmNvbSIsInN1YiI6IjMxNzE1MjMzMCIsImp0aSI6ImhtT2tmc0NCQVM5d2JkQUhiSDVva3lCOW84OVpqdVRRIiwidGlkIjoiMiIsInJmdF9pZCI6IjBGQkFEMUQ5RjFENzdGOTlFQjdFNzAzM0IzQ0RFREVGIiwiY2xpZW50X2lkIjoiYThFc0RsUGMzWkNWZ3NVcHBwdWMiLCJzY29wZSI6ImRyZWFtMTE6YWxsIiwiYW1yIjpbIm90cCJdLCJjb3VudHJ5Q29kZSI6IklOIn0.iZVontVwx0-WkQErCRaKQ9Eum31miMaGnsO1uO4KOiuKxnGxl2nx_guM8k4pL0R8R7WRhTebkXXlC-WUb039AGU0kq6U-Hafrx40Pss3bsJ76AKG8Ygi8SN38-D3g-oXanhGdnnH0NPuoVDCUfBL5M9UmkIzvH_VwPOoJFCBRtsNoNzmmIN5Ef-YhdNi8sb2fvuXnIkzekJ0KbhxtpCTA6xcrFn3uemmJPyhyzg6lDU4pvDYAGpDiJh0GTnk1RXtDj9qqkloX4jSrJ5HQkqIBUlTtEKykImGSJz9ob-oXbpkajc0kcQKrCltfclX0eOHPHy98lQTgpvOtg6ulY6nvQ
+content-type: application/json
+content-length: 1696
+accept-encoding: gzip
+
+{"query":"\n    query SectionalRewardsShopListing($sectionLimit: Int, $sectionOffset: Int, $sectionIds: [Int!], $rewardLimit: Int, $rewardOffset: Int, $isSectionRequired: Boolean = true, $isCollectionRequired: Boolean = true, $clientKey: String) {\n  sectionedRewardListing(\n    sectionLimit: $sectionLimit\n    sectionOffset: $sectionOffset\n    sectionIds: $sectionIds\n    rewardLimit: $rewardLimit\n    rewardOffset: $rewardOffset\n    isCollectionRequired: $isCollectionRequired\n    clientKey: $clientKey\n  ) {\n    sectionedRewardShopListing {\n      sections {\n        itemsInsideSection {\n          items {\n            ...RewardsShopItems\n          }\n          hasMoreItems\n          rewardOffset\n        }\n        sectionData {\n          ...SectionData\n        }\n      }\n      hasMoreSections @include(if: $isSectionRequired)\n      sectionOffset @include(if: $isSectionRequired)\n    }\n  }\n}\n    \n    fragment RewardsShopItems on SectionRewardListItem {\n  ItemId\n  availableTill\n  sku {\n    isAvailable\n    mrp\n    sellingPrice\n    skuId\n    imgUrl\n    skuName\n  }\n  imgUrl\n  isUserLimitBreached\n  title\n  features {\n    featureName\n    value\n    featureImg\n    featureId\n    description\n  }\n  maxPerUser\n  extendedImageUrl\n  promotional {\n    redirectionUrl\n    redirectionType\n  }\n}\n    \n\n    fragment SectionData on SectionInfo {\n  description\n  iconUrl\n  title\n  totalRewardsInSection\n  sectionId\n  sectionLayout\n}\n    ","variables":{"sectionIds":[],"sectionLimit":1,"sectionOffset":0,"rewardLimit":10,"rewardOffset":0,"isSectionRequired":true,"isCollectionRequired":false,"clientKey":"9afa2d86-e53a-4c7e-bba1-b8ac10083361"}}
+*/
+export async function POST() {
+	return NextResponse.json({
+		"data": {
+			"sectionedRewardListing": {
+				"sectionedRewardShopListing": {
+					"sections": [],
+					"hasMoreSections": false,
+					"sectionOffset": 0
+				}
+			}
+		}
+	});
+}

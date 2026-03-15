@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 /**
 :method: POST
-:path: /graphql/query/react-native/dreambucks-balance
+:path: /graphql/query/react-native/side-nav-details-query
 :authority: app.dream11.com
 :scheme: https
 accept: application/json
@@ -23,16 +23,21 @@ siteid: 1
 locale: en-US
 authorization: Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsInR5cCI6ImF0K2p3dCIsImtpZCI6IlRqb0FsLVdyZWN3Z3MtZVVvcm5xWWE5Y2x4dyJ9.eyJhdWQiOiJhOEVzRGxQYzNaQ1Znc1VwcHB1YyIsImV4cCI6MTc3MzY3NzY5NiwiaWF0IjoxNzczNTkxMjk2LCJpc3MiOiJkcmVhbTExLmNvbSIsInN1YiI6IjMxNzE1MjMzMCIsImp0aSI6ImhtT2tmc0NCQVM5d2JkQUhiSDVva3lCOW84OVpqdVRRIiwidGlkIjoiMiIsInJmdF9pZCI6IjBGQkFEMUQ5RjFENzdGOTlFQjdFNzAzM0IzQ0RFREVGIiwiY2xpZW50X2lkIjoiYThFc0RsUGMzWkNWZ3NVcHBwdWMiLCJzY29wZSI6ImRyZWFtMTE6YWxsIiwiYW1yIjpbIm90cCJdLCJjb3VudHJ5Q29kZSI6IklOIn0.iZVontVwx0-WkQErCRaKQ9Eum31miMaGnsO1uO4KOiuKxnGxl2nx_guM8k4pL0R8R7WRhTebkXXlC-WUb039AGU0kq6U-Hafrx40Pss3bsJ76AKG8Ygi8SN38-D3g-oXanhGdnnH0NPuoVDCUfBL5M9UmkIzvH_VwPOoJFCBRtsNoNzmmIN5Ef-YhdNi8sb2fvuXnIkzekJ0KbhxtpCTA6xcrFn3uemmJPyhyzg6lDU4pvDYAGpDiJh0GTnk1RXtDj9qqkloX4jSrJ5HQkqIBUlTtEKykImGSJz9ob-oXbpkajc0kcQKrCltfclX0eOHPHy98lQTgpvOtg6ulY6nvQ
 content-type: application/json
-content-length: 116
+content-length: 306
 accept-encoding: gzip
 
-{"query":"\n    query DreambucksBalance {\n  getDreamBucksBalance {\n    totalBalance\n  }\n}\n    ","variables":{}}
+{"query":"\n    query SideNavDetailsQuery($userId: Int!, $isMiniProfile: Boolean) {\n  user(userId: $userId, isMiniProfile: $isMiniProfile) {\n    userInfo {\n      teamName\n      profilePicUrl\n      userType\n      isVerified\n    }\n  }\n}\n    ","variables":{"userId":317152330,"isMiniProfile":false}}
 */
 export async function POST() {
 	return NextResponse.json({
 		"data": {
-			"getDreamBucksBalance": {
-				"totalBalance": 100
+			"user": {
+				"userInfo": {
+					"teamName": "AARONTH CONQUERERS",
+					"profilePicUrl": "",
+					"userType": "NORMAL",
+					"isVerified": false
+				}
 			}
 		}
 	});

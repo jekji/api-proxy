@@ -1,202 +1,213 @@
 import { NextResponse } from 'next/server';
 
+/**
+:method: POST
+:path: /graphql/query/react-native/creators-for-you-query
+:authority: app.dream11.com
+:scheme: https
+accept: application/json
+device: androidplaystore
+devicetype: ANDROID
+deviceid: 2d016ea7f014d06c
+ek1: 1baaed3d74f4a9d3e015539e9e57e52e3628b5eacd96f7e4fb42be4ef92153d9
+ek2: 1baaed3d74f4a9d3e015539e9e57e52e3628b5eacd96f7e4fb42be4ef92153d9
+x-manufacturer: google
+x-os-version: 16
+x-os-type: android
+x-app-version-name: 750
+app_version: 7.5.0
+a1: b4581fbf01c51d18e8c85cc70ed1b60f7e4467ade5695bfbc25b50e5b0cc84f5
+version: 10045
+user-agent: Dream11/7.5.0 (Linux; Android 36; Pixel 6a) Build/10045
+siteid: 1
+locale: en-US
+authorization: Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsInR5cCI6ImF0K2p3dCIsImtpZCI6IlRqb0FsLVdyZWN3Z3MtZVVvcm5xWWE5Y2x4dyJ9.eyJhdWQiOiJhOEVzRGxQYzNaQ1Znc1VwcHB1YyIsImV4cCI6MTc3MzY3NzY5NiwiaWF0IjoxNzczNTkxMjk2LCJpc3MiOiJkcmVhbTExLmNvbSIsInN1YiI6IjMxNzE1MjMzMCIsImp0aSI6ImhtT2tmc0NCQVM5d2JkQUhiSDVva3lCOW84OVpqdVRRIiwidGlkIjoiMiIsInJmdF9pZCI6IjBGQkFEMUQ5RjFENzdGOTlFQjdFNzAzM0IzQ0RFREVGIiwiY2xpZW50X2lkIjoiYThFc0RsUGMzWkNWZ3NVcHBwdWMiLCJzY29wZSI6ImRyZWFtMTE6YWxsIiwiYW1yIjpbIm90cCJdLCJjb3VudHJ5Q29kZSI6IklOIn0.iZVontVwx0-WkQErCRaKQ9Eum31miMaGnsO1uO4KOiuKxnGxl2nx_guM8k4pL0R8R7WRhTebkXXlC-WUb039AGU0kq6U-Hafrx40Pss3bsJ76AKG8Ygi8SN38-D3g-oXanhGdnnH0NPuoVDCUfBL5M9UmkIzvH_VwPOoJFCBRtsNoNzmmIN5Ef-YhdNi8sb2fvuXnIkzekJ0KbhxtpCTA6xcrFn3uemmJPyhyzg6lDU4pvDYAGpDiJh0GTnk1RXtDj9qqkloX4jSrJ5HQkqIBUlTtEKykImGSJz9ob-oXbpkajc0kcQKrCltfclX0eOHPHy98lQTgpvOtg6ulY6nvQ
+content-type: application/json
+content-length: 282
+accept-encoding: gzip
+
+{"query":"\n    query creatorsForYouQuery($count: Int!) {\n  creatorsForYou(count: $count) {\n    userInfo {\n      id\n      teamName\n      shortBio\n      profilePicUrl\n      isVerified\n      userType\n    }\n    isFollowing\n    isLive\n  }\n}\n    ","variables":{"count":16}}
+ */
 export async function POST() {
 	return NextResponse.json({
 		"data": {
-			"creatorsForYou": [
-				{
-					"userInfo": {
-						"id": 316897654, 
-						"teamName": "Whats He On About", 
-						"shortBio": "Pure Cricket", 
-						"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/504b4f0c3289bfd9cc44d2cb68bd76abe6089254_profilepic.jpg?id=89b1bd90-dab8-11f0-9d88-f078bbaa59ed", 
-						"isVerified": true, 
-						"userType": "CREATOR"
-					}, 
-					"isFollowing": false, 
-					"isLive": false
-				}, 
-				{
-					"userInfo": {
-						"id": 319535945, 
-						"teamName": "average f1 consumer", 
-						"shortBio": "i talk about f1", 
-						"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/fdbbcf28bd571355e305806dfd9376ed58f28558_profilepic.jpg?id=64470300-171a-11f1-be22-f47561b4bf71", 
-						"isVerified": true, 
-						"userType": "CREATOR"
-					}, 
-					"isFollowing": false, 
-					"isLive": false
-				}, 
-				{
-					"userInfo": {
-						"id": 316901069, 
-						"teamName": "TJR99", 
-						"shortBio": "Friendly & Fun", 
-						"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/f85ad8f6eff288f8cae045941815b5dfb310ce51_profilepic.jpg?id=ff2d4430-d262-11f0-835d-f7e031a49303", 
-						"isVerified": true, 
-						"userType": "CREATOR"
-					}, 
-					"isFollowing": false, 
-					"isLive": false
-				}, 
-				{
-					"userInfo": {
-						"id": 319378096, 
-						"teamName": "OutTheTunnel", 
-						"shortBio": "Football HQ", 
-						"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/578d17762e3dbea10846727823ab56d500f1f9cc_profilepic.jpg?id=d1c37d30-196f-11f1-afec-ade9c408d2e8", 
-						"isVerified": true, 
-						"userType": "CREATOR"
-					}, 
-					"isFollowing": false, 
-					"isLive": true
-				}, 
-				{
-					"userInfo": {
-						"id": 83055897, 
-						"teamName": "Clubcricketbadger", 
-						"shortBio": "Jokes!", 
-						"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/9e55e20299dcb704fefb6358cd971135a3fb9eb5_profilepic.jpg?id=656c2810-d27c-11f0-a44b-ce2a43e73449", 
-						"isVerified": true, 
-						"userType": "CREATOR"
-					}, 
-					"isFollowing": false, 
-					"isLive": false
-				}, 
-				{
-					"userInfo": {
-						"id": 317155160, 
-						"teamName": "Jake Jeakings", 
-						"shortBio": "BEST SLEDGE… GO", 
-						"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/10f192bc3f18801627ba91fc76207d2aea0fcd04_profilepic.jpg?id=82140a70-f60b-11f0-9075-c2a42356781e", 
-						"isVerified": true, 
-						"userType": "CREATOR"
-					}, 
-					"isFollowing": false, 
-					"isLive": false
-				}, 
-				{
-					"userInfo": {
-						"id": 318687908, 
-						"teamName": "Cricket District", 
-						"shortBio": "Cricket Culture", 
-						"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/c3822ab6e8500d3f5d1371aaab3a6e92e408a0d4_profilepic.jpg?id=43334fe0-1178-11f1-b88d-58e3ab72aa0d", 
-						"isVerified": true, 
-						"userType": "CREATOR"
-					}, 
-					"isFollowing": false, 
-					"isLive": false
-				}, 
-				{
-					"userInfo": {
-						"id": 317276288, 
-						"teamName": "Wicketers", 
-						"shortBio": "Cricket Show", 
-						"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/54a0b1d676487de7fff291cdd95f5dbe8c2df6bb_profilepic.jpg?id=d0ebca30-dc0b-11f0-ba8f-5e0e8ad99dd4", 
-						"isVerified": true, 
-						"userType": "CREATOR"
-					}, 
-					"isFollowing": false, 
-					"isLive": false
-				}, 
-				{
-					"userInfo": {
-						"id": 319379078, 
-						"teamName": "P1 with Matt and Tommy", 
-						"shortBio": "F1 Watchalongs", 
-						"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/ba05c840ccd7723dcd4922918daa94d3436aaf74_profilepic.jpg?id=c42b28a0-1409-11f1-aae8-5f94d651407e", 
-						"isVerified": true, 
-						"userType": "CREATOR"
-					}, 
-					"isFollowing": false, 
-					"isLive": false
-				}, 
-				{
-					"userInfo": {
-						"id": 318372777, 
-						"teamName": "GraceHayden", 
-						"shortBio": "Analysis+Banter", 
-						"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/958c96652064f44d7f50e6eb3a2f9406f02e36cc_profilepic.jpg?id=a75be430-036a-11f1-a3da-d8459cbe4c0b", 
-						"isVerified": true, 
-						"userType": "CREATOR"
-					}, 
-					"isFollowing": false, 
-					"isLive": false
-				}, 
-				{
-					"userInfo": {
-						"id": 319376679, 
-						"teamName": "Jack Caulfield", 
-						"shortBio": "Football Quiz", 
-						"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/6280e9b115fa2490951f6da5579e57ee3829d645_profilepic.jpg?id=c9624040-1c8a-11f1-b94a-8db7a7968089", 
-						"isVerified": true, 
-						"userType": "CREATOR"
-					}, 
-					"isFollowing": false, 
-					"isLive": false
-				}, 
-				{
-					"userInfo": {
-						"id": 318508441, 
-						"teamName": "Shepmates", 
-						"shortBio": "Taking the piss", 
-						"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/c297a202f7fd3f8ea219bcaf17df6da4eefff212_profilepic.jpg?id=4ded57d0-1abc-11f1-9d01-054f83d89c7e", 
-						"isVerified": true, 
-						"userType": "CREATOR"
-					}, 
-					"isFollowing": false, 
-					"isLive": false
-				}, 
-				{
-					"userInfo": {
-						"id": 319517586, 
-						"teamName": "INPHRATIC", 
-						"shortBio": "Unfiltered", 
-						"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/fafa709d2aec39ecfe750dcd1b71323be0ccd4d5_profilepic.jpg?id=6dc87120-17dd-11f1-8088-1cd73023cb5d", 
-						"isVerified": true, 
-						"userType": "CREATOR"
-					}, 
-					"isFollowing": false, 
-					"isLive": false
-				}, 
-				{
-					"userInfo": {
-						"id": 319520646, 
-						"teamName": "IN THE NET", 
-						"shortBio": "Football Talk", 
-						"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/8d0f67bf6083f302ea157bfa40c487b0ca3140b7_profilepic.jpg?id=0448b510-164e-11f1-960f-cde46a22a100", 
-						"isVerified": true, 
-						"userType": "CREATOR"
-					}, 
-					"isFollowing": false, 
-					"isLive": false
-				}, 
-				{
-					"userInfo": {
-						"id": 319074736, 
-						"teamName": "Cricket Unfiltered", 
-						"shortBio": "Menners/MacGill", 
-						"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/f838ed11b284f924c290d4102e05eab34ce8be10_profilepic.jpg?id=ecb05590-116e-11f1-b230-44b094b7abf9", 
-						"isVerified": true, 
-						"userType": "CREATOR"
-					}, 
-					"isFollowing": false, 
-					"isLive": false
-				}, 
-				{
-					"userInfo": {
-						"id": 318063582, 
-						"teamName": "Beyond the Boundary", 
-						"shortBio": "Bat ball banter", 
-						"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/e79fed97d7550e43d7b89c88739cbe65fe2fa38e_profilepic.jpg?id=f52763e0-ff3e-11f0-b4bf-d0c9c9cfb83f", 
-						"isVerified": true, 
-						"userType": "CREATOR"
-					}, 
-					"isFollowing": false, 
-					"isLive": false
-				}
-			]
+			"creatorsForYou": [{
+				"userInfo": {
+					"id": 260432868,
+					"teamName": "Pahul Walia",
+					"shortBio": "Roast Mode On",
+					"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/f700d5ba3c472e754e2de2ffb6a4b9b21702ae40_profilepic.jpg?id=cc9cb430-d4e0-11f0-80f9-e7860362cdb7",
+					"isVerified": true,
+					"userType": "CREATOR"
+				},
+				"isFollowing": false,
+				"isLive": false
+			}, {
+				"userInfo": {
+					"id": 317155160,
+					"teamName": "Jake Jeakings",
+					"shortBio": "BEST SLEDGE… GO",
+					"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/10f192bc3f18801627ba91fc76207d2aea0fcd04_profilepic.jpg?id=82140a70-f60b-11f0-9075-c2a42356781e",
+					"isVerified": true,
+					"userType": "CREATOR"
+				},
+				"isFollowing": false,
+				"isLive": true
+			}, {
+				"userInfo": {
+					"id": 128862716,
+					"teamName": "HarshNagar",
+					"shortBio": "Mazedaar Stuff",
+					"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/909e0217e9810d054d00c0d0b0be7edf24f2d52c_profilepic.jpg?id=a1a43920-d02f-11f0-903e-beb552741e24",
+					"isVerified": true,
+					"userType": "CREATOR"
+				},
+				"isFollowing": false,
+				"isLive": false
+			}, {
+				"userInfo": {
+					"id": 318739630,
+					"teamName": "CricAstro2026",
+					"shortBio": "Cosmic Cricket",
+					"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/8e2c4f596e093fbbdb3781d1b9af4175d51c2762_profilepic.jpg?id=62932c20-08ae-11f1-aed7-c4c07e0e10cf",
+					"isVerified": true,
+					"userType": "CREATOR"
+				},
+				"isFollowing": false,
+				"isLive": false
+			}, {
+				"userInfo": {
+					"id": 285655500,
+					"teamName": "SPORTS YAARI",
+					"shortBio": "Funny Banters",
+					"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/9d2bd683e89e86aea9169565de6d422c1d536a04_profilepic.jpg?id=9bb91770-fe9b-11f0-8cba-0fb9f00745ff",
+					"isVerified": true,
+					"userType": "CREATOR"
+				},
+				"isFollowing": false,
+				"isLive": false
+			}, {
+				"userInfo": {
+					"id": 34366328,
+					"teamName": "Ravs1007",
+					"shortBio": "Cricket Bhokali",
+					"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/239435c018fddb99088ef07f4eb32478b120d585_profilepic.jpg?id=b10253a0-d031-11f0-af78-28425760fa15",
+					"isVerified": true,
+					"userType": "CREATOR"
+				},
+				"isFollowing": false,
+				"isLive": false
+			}, {
+				"userInfo": {
+					"id": 99728914,
+					"teamName": "SKB Shots",
+					"shortBio": "Masti Muchatlu",
+					"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/8a5c971729deebb55cd12516a61132b6efc6d6ec_profilepic.jpg?id=59a15bc0-d030-11f0-806c-31b650d1d271",
+					"isVerified": true,
+					"userType": "CREATOR"
+				},
+				"isFollowing": false,
+				"isLive": false
+			}, {
+				"userInfo": {
+					"id": 20753873,
+					"teamName": "Karunesh Talwar",
+					"shortBio": "Faaltu baatein",
+					"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/c1c09c4d19b3d2ea53409a745383422a0211a254_profilepic.jpg?id=07785ca0-ed3a-11f0-a5fd-2ba0e9f20c62",
+					"isVerified": true,
+					"userType": "CREATOR"
+				},
+				"isFollowing": false,
+				"isLive": false
+			}, {
+				"userInfo": {
+					"id": 319074736,
+					"teamName": "Cricket Unfiltered",
+					"shortBio": "Menners/MacGill",
+					"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/f838ed11b284f924c290d4102e05eab34ce8be10_profilepic.jpg?id=ecb05590-116e-11f1-b230-44b094b7abf9",
+					"isVerified": true,
+					"userType": "CREATOR"
+				},
+				"isFollowing": false,
+				"isLive": false
+			}, {
+				"userInfo": {
+					"id": 318135038,
+					"teamName": "ashwinravi99",
+					"shortBio": "No Nonsense",
+					"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/58ffb2afe936b7437c5c60b30aab7d628f537bdc_profilepic.jpg?id=9c067030-f6b0-11f0-a953-a947a9467ddd",
+					"isVerified": true,
+					"userType": "CREATOR"
+				},
+				"isFollowing": false,
+				"isLive": false
+			}, {
+				"userInfo": {
+					"id": 11661350,
+					"teamName": "Kandy G",
+					"shortBio": "Super fun",
+					"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/ff614667b1a92c48cc3be1d61d0522f09c5803d9_profilepic.jpg?id=6b5a4e60-f06c-11f0-8303-3b1b865f4e7d",
+					"isVerified": true,
+					"userType": "CREATOR"
+				},
+				"isFollowing": false,
+				"isLive": false
+			}, {
+				"userInfo": {
+					"id": 280884995,
+					"teamName": "The Cricket Queen",
+					"shortBio": "Unfiltered",
+					"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/e064c8836ef791d21887a9baee88131fc26a02da_profilepic.jpg?id=32838480-d41f-11f0-8f85-9c6279e85a72",
+					"isVerified": true,
+					"userType": "CREATOR"
+				},
+				"isFollowing": false,
+				"isLive": false
+			}, {
+				"userInfo": {
+					"id": 318475597,
+					"teamName": "KV vs Anirban ",
+					"shortBio": "Trivia & Banter",
+					"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/19e49397eba44afa90aa49c953de820d58caccad_profilepic.jpg?id=45f46820-0013-11f1-bfa5-4a6fd35e3782",
+					"isVerified": true,
+					"userType": "CREATOR"
+				},
+				"isFollowing": false,
+				"isLive": false
+			}, {
+				"userInfo": {
+					"id": 317276288,
+					"teamName": "Wicketers",
+					"shortBio": "Cricket Show",
+					"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/54a0b1d676487de7fff291cdd95f5dbe8c2df6bb_profilepic.jpg?id=d0ebca30-dc0b-11f0-ba8f-5e0e8ad99dd4",
+					"isVerified": true,
+					"userType": "CREATOR"
+				},
+				"isFollowing": false,
+				"isLive": false
+			}, {
+				"userInfo": {
+					"id": 2575918,
+					"teamName": "Indian Cricket Comedy",
+					"shortBio": "Lockdown Kid",
+					"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/1f11c612b3203fc4c4db8d34682ecd44d29bcb9a_profilepic.jpg?id=fc68a750-d030-11f0-a389-806f8582e0d2",
+					"isVerified": true,
+					"userType": "CREATOR"
+				},
+				"isFollowing": false,
+				"isLive": false
+			}, {
+				"userInfo": {
+					"id": 101288279,
+					"teamName": "4forTwo",
+					"shortBio": "Irreverence Max",
+					"profilePicUrl": "https://userassets.dream11.com/fbprofilepic/9d217dd130934e646cc111383043c5c1a04c6eb8_profilepic.jpg?id=d4a76ac0-fa98-11f0-9019-6b775760a787",
+					"isVerified": true,
+					"userType": "CREATOR"
+				},
+				"isFollowing": false,
+				"isLive": false
+			}]
 		}
 	});
 }
