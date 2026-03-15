@@ -1,10 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 禁用 Next.js 的自动斜杠处理和重定向逻辑（在某些版本中有效）
-  skipTrailingSlashRedirect: true, 
-  // 确保没有开启强制斜杠配置
-  trailingSlash: false,
-  
   async rewrites() {
     return [
       // API 路由重写到外部服务
