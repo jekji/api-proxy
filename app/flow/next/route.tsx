@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 // }
 export async function POST() {
 	return NextResponse.json({
-		"flow": "LOCATION",
+		"flow": "signinup",
 		"timestamp": 1773544476812
 	});
 }
