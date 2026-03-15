@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-	return new NextResponse("success", {
-		status: 200,
-		headers: {
-			'Content-Type': 'text/plain'
-		}
+	return NextResponse.json({
+		"access_token": "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsInR5cCI6ImF0K2p3dCIsImtpZCI6IlRqb0FsLVdyZWN3Z3MtZVVvcm5xWWE5Y2x4dyJ9.eyJhdWQiOiJhOEVzRGxQYzNaQ1Znc1VwcHB1YyIsImV4cCI6MTc3MzYyOTU4OCwiaWF0IjoxNzczNTQzMTg4LCJpc3MiOiJkcmVhbTExLmNvbSIsInN1YiI6IjJkMDE2ZWE3ZjAxNGQwNmMiLCJqdGkiOiJrVTQ1M1pFUm9nbHVqaVA0eTMwNHBHVWJmbk5zSHhHVyIsInRpZCI6IjIiLCJyZnRfaWQiOiJENDFEOENEOThGMDBCMjA0RTk4MDA5OThFQ0Y4NDI3RSIsImNsaWVudF9pZCI6ImE4RXNEbFBjM1pDVmdzVXBwcHVjIiwic2NvcGUiOiJkcmVhbTExLWd1ZXN0IiwiYW1yIjpbXX0.MlS2Xu53zFqLyfYVF4TheyN6wAoEvmRaGiW-b5rlw4mfj1hiXSkgZybacmaWAWhlwlkq3O9JUhBINtcWu7Yqr1naYREuUbGhM5WEZn3QM_fITH4PX2ZVnsEiIeUWOjcs6gM5UIKx7m8-FT8wPaZvOwEpQx1ugLLaY0JQ_8Fza1Ziz24Gb3skHUjanJEFQH-OtMH6HM0bnt2tkRwT0zpoC-5_i61Luc6wk03Bd30hnJUQ_lVhbVBZ0Gp99lVg7cHbznz5LqE4MQLzknGV_tjUZlzElmzV0LDMnfKfJuchuGMev-AYo31jMqWEAn55Q8rvasC09LmRW5a6_ijkLkt3YQ",
+		"token_type": "Bearer",
+		"expires_in": 86400
 	});
 }
