@@ -28,152 +28,492 @@ accept-encoding: gzip
 
 {"query":"\n    query PersonalisedScorecardQuery($site: String!, $matchId: Int!, $contestId: ID!, $isPlaying: Boolean!, $includeContestStats: Boolean!, $tourId: Int!, $userId: Int!) {\n  match(site: $site, id: $matchId) {\n    listTeams(tourId: $tourId, matchId: $matchId, userId: $userId) {\n      id\n      points\n    }\n    contest(id: $contestId) @include(if: $includeContestStats) {\n      myTeams {\n        id\n        points\n      }\n    }\n    players(isPlaying: $isPlaying) {\n      artwork {\n        src\n      }\n      id\n      rolesInTeams {\n        teamId\n        role {\n          shortName\n        }\n      }\n      selectedInTeams\n    }\n  }\n}\n    ","variables":{"site":"cricket","matchId":112970,"contestId":"-1","isPlaying":true,"includeContestStats":false,"tourId":5388,"userId":317152330}}
 
+{
+	"query": "\n    query PersonalisedScorecardQuery($site: String!, $matchId: Int!, $contestId: ID!, $isPlaying: Boolean!, $includeContestStats: Boolean!, $tourId: Int!, $userId: Int!) {\n  match(site: $site, id: $matchId) {\n    listTeams(tourId: $tourId, matchId: $matchId, userId: $userId) {\n      id\n      points\n    }\n    contest(id: $contestId) @include(if: $includeContestStats) {\n      myTeams {\n        id\n        points\n      }\n    }\n    players(isPlaying: $isPlaying) {\n      artwork {\n        src\n      }\n      id\n      rolesInTeams {\n        teamId\n        role {\n          shortName\n        }\n      }\n      selectedInTeams\n    }\n  }\n}\n    ",
+	"variables": {
+		"site": "cricket",
+		"matchId": 112993,
+		"contestId": "-1",
+		"isPlaying": true,
+		"includeContestStats": false,
+		"tourId": 5391,
+		"userId": 317152330
+	}
+}
+
 */
-export async function POST() {
+export async function POST(request: Request) {
+	const body = await request.json();
+	const { variables } = body;
+
+	const matchId = variables?.matchId;
+
+	if (matchId == 112970) {
+		return NextResponse.json({
+			"data": {
+				"match": {
+					"listTeams": [{
+						"id": 1,
+						"points": 465.5
+					}],
+					"players": [{
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/907.png"
+						}],
+						"id": 907,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/716.png"
+						}],
+						"id": 716,
+						"rolesInTeams": [{
+							"teamId": 1,
+							"role": {
+								"shortName": "C"
+							}
+						}],
+						"selectedInTeams": [1]
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 1004,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 86261,
+						"rolesInTeams": [{
+							"teamId": 1,
+							"role": null
+						}],
+						"selectedInTeams": [1]
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 1158,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 9034,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 8749,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 1312,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/Men/639.png"
+						}],
+						"id": 639,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 183327,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 1267,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 290,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/1002.png"
+						}],
+						"id": 1002,
+						"rolesInTeams": [{
+							"teamId": 1,
+							"role": {
+								"shortName": "VC"
+							}
+						}],
+						"selectedInTeams": [1]
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 1393,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 3067,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 360,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 701,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 999,
+						"rolesInTeams": [{
+							"teamId": 1,
+							"role": null
+						}],
+						"selectedInTeams": [1]
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 1563,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 1114,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/1281.png"
+						}],
+						"id": 1281,
+						"rolesInTeams": [{
+							"teamId": 1,
+							"role": null
+						}],
+						"selectedInTeams": [1]
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 6569,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 16138,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 8748,
+						"rolesInTeams": [{
+							"teamId": 1,
+							"role": null
+						}],
+						"selectedInTeams": [1]
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 1565,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 185218,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 432,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 177500,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 762,
+						"rolesInTeams": [{
+							"teamId": 1,
+							"role": null
+						}],
+						"selectedInTeams": [1]
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 2100,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 185033,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 1115,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 5982,
+						"rolesInTeams": [{
+							"teamId": 1,
+							"role": null
+						}],
+						"selectedInTeams": [1]
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 1512,
+						"rolesInTeams": [{
+							"teamId": 1,
+							"role": null
+						}],
+						"selectedInTeams": [1]
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 28796,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 72192,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 1573,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 1891,
+						"rolesInTeams": [{
+							"teamId": 1,
+							"role": null
+						}],
+						"selectedInTeams": [1]
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/10.png"
+						}],
+						"id": 10,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 894,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 11737,
+						"rolesInTeams": [{
+							"teamId": 1,
+							"role": null
+						}],
+						"selectedInTeams": [1]
+					}, {
+						"artwork": [{
+							"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						}],
+						"id": 8930,
+						"rolesInTeams": [],
+						"selectedInTeams": []
+					}]
+				}
+			}
+		});
+	}
+
+	// 112993
 	return NextResponse.json({
 		"data": {
 			"match": {
 				"listTeams": [{
 					"id": 1,
-					"points": 465.5
+					"points": 413
+				}, {
+					"id": 2,
+					"points": 411.5
 				}],
 				"players": [{
 					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/907.png"
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/8449.png"
 					}],
-					"id": 907,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/716.png"
-					}],
-					"id": 716,
-					"rolesInTeams": [{
-						"teamId": 1,
-						"role": {
-							"shortName": "C"
-						}
-					}],
-					"selectedInTeams": [1]
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 1004,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 86261,
+					"id": 8449,
 					"rolesInTeams": [{
 						"teamId": 1,
 						"role": null
+					}, {
+						"teamId": 2,
+						"role": null
 					}],
-					"selectedInTeams": [1]
+					"selectedInTeams": [1, 2]
 				}, {
 					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/1441.png"
 					}],
-					"id": 1158,
+					"id": 1441,
 					"rolesInTeams": [],
 					"selectedInTeams": []
 				}, {
 					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/8504.png"
 					}],
-					"id": 9034,
+					"id": 8504,
 					"rolesInTeams": [],
 					"selectedInTeams": []
 				}, {
 					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/3653.png"
 					}],
-					"id": 8749,
+					"id": 3653,
+					"rolesInTeams": [{
+						"teamId": 1,
+						"role": null
+					}, {
+						"teamId": 2,
+						"role": {
+							"shortName": "VC"
+						}
+					}],
+					"selectedInTeams": [1, 2]
+				}, {
+					"artwork": [{
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/9220.png"
+					}],
+					"id": 9220,
+					"rolesInTeams": [{
+						"teamId": 1,
+						"role": null
+					}, {
+						"teamId": 2,
+						"role": null
+					}],
+					"selectedInTeams": [1, 2]
+				}, {
+					"artwork": [{
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/86740.png"
+					}],
+					"id": 86740,
 					"rolesInTeams": [],
 					"selectedInTeams": []
 				}, {
 					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/Men2025/1708.png"
 					}],
-					"id": 1312,
+					"id": 1708,
 					"rolesInTeams": [],
 					"selectedInTeams": []
 				}, {
 					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/Men/639.png"
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/4719.png"
 					}],
-					"id": 639,
+					"id": 4719,
 					"rolesInTeams": [],
 					"selectedInTeams": []
 				}, {
 					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/9243.png"
 					}],
-					"id": 183327,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 1267,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 290,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/1002.png"
-					}],
-					"id": 1002,
+					"id": 9243,
 					"rolesInTeams": [{
 						"teamId": 1,
 						"role": {
 							"shortName": "VC"
 						}
+					}, {
+						"teamId": 2,
+						"role": null
 					}],
-					"selectedInTeams": [1]
+					"selectedInTeams": [1, 2]
 				}, {
 					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/58303.png"
 					}],
-					"id": 1393,
+					"id": 58303,
 					"rolesInTeams": [],
 					"selectedInTeams": []
 				}, {
 					"artwork": [{
 						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
 					}],
-					"id": 3067,
+					"id": 150536,
 					"rolesInTeams": [],
 					"selectedInTeams": []
 				}, {
 					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/8417.png"
 					}],
-					"id": 360,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 701,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 999,
+					"id": 8417,
 					"rolesInTeams": [{
 						"teamId": 1,
 						"role": null
@@ -181,23 +521,43 @@ export async function POST() {
 					"selectedInTeams": [1]
 				}, {
 					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/1809.png"
 					}],
-					"id": 1563,
+					"id": 1809,
+					"rolesInTeams": [{
+						"teamId": 1,
+						"role": {
+							"shortName": "C"
+						}
+					}, {
+						"teamId": 2,
+						"role": {
+							"shortName": "C"
+						}
+					}],
+					"selectedInTeams": [1, 2]
+				}, {
+					"artwork": [{
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/1213.png"
+					}],
+					"id": 1213,
+					"rolesInTeams": [{
+						"teamId": 2,
+						"role": null
+					}],
+					"selectedInTeams": [2]
+				}, {
+					"artwork": [{
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/21594.png"
+					}],
+					"id": 21594,
 					"rolesInTeams": [],
 					"selectedInTeams": []
 				}, {
 					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/94811.png"
 					}],
-					"id": 1114,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/1281.png"
-					}],
-					"id": 1281,
+					"id": 94811,
 					"rolesInTeams": [{
 						"teamId": 1,
 						"role": null
@@ -205,23 +565,118 @@ export async function POST() {
 					"selectedInTeams": [1]
 				}, {
 					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/156287.png"
 					}],
-					"id": 6569,
+					"id": 156287,
 					"rolesInTeams": [],
 					"selectedInTeams": []
 				}, {
 					"artwork": [{
 						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
 					}],
-					"id": 16138,
+					"id": 15190,
+					"rolesInTeams": [],
+					"selectedInTeams": []
+				}, {
+					"artwork": [{
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/28747.png"
+					}],
+					"id": 28747,
+					"rolesInTeams": [],
+					"selectedInTeams": []
+				}, {
+					"artwork": [{
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/85637.png"
+					}],
+					"id": 85637,
+					"rolesInTeams": [{
+						"teamId": 1,
+						"role": null
+					}, {
+						"teamId": 2,
+						"role": null
+					}],
+					"selectedInTeams": [1, 2]
+				}, {
+					"artwork": [{
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/1981.png"
+					}],
+					"id": 1981,
+					"rolesInTeams": [],
+					"selectedInTeams": []
+				}, {
+					"artwork": [{
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/9236.png"
+					}],
+					"id": 9236,
+					"rolesInTeams": [{
+						"teamId": 1,
+						"role": null
+					}, {
+						"teamId": 2,
+						"role": null
+					}],
+					"selectedInTeams": [1, 2]
+				}, {
+					"artwork": [{
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/83402.png"
+					}],
+					"id": 83402,
+					"rolesInTeams": [],
+					"selectedInTeams": []
+				}, {
+					"artwork": [{
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/9219.png"
+					}],
+					"id": 9219,
+					"rolesInTeams": [],
+					"selectedInTeams": []
+				}, {
+					"artwork": [{
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/1666.png"
+					}],
+					"id": 1666,
 					"rolesInTeams": [],
 					"selectedInTeams": []
 				}, {
 					"artwork": [{
 						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
 					}],
-					"id": 8748,
+					"id": 28813,
+					"rolesInTeams": [],
+					"selectedInTeams": []
+				}, {
+					"artwork": [{
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/1915.png"
+					}],
+					"id": 1915,
+					"rolesInTeams": [],
+					"selectedInTeams": []
+				}, {
+					"artwork": [{
+						"src": "https://d11.s3.amazonaws.com/player-images/partner-image/MenGoogle2026/8426.png"
+					}],
+					"id": 8426,
+					"rolesInTeams": [{
+						"teamId": 2,
+						"role": null
+					}],
+					"selectedInTeams": [2]
+				}, {
+					"artwork": [{
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/1704.png"
+					}],
+					"id": 1704,
+					"rolesInTeams": [{
+						"teamId": 2,
+						"role": null
+					}],
+					"selectedInTeams": [2]
+				}, {
+					"artwork": [{
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/33330.png"
+					}],
+					"id": 33330,
 					"rolesInTeams": [{
 						"teamId": 1,
 						"role": null
@@ -229,143 +684,29 @@ export async function POST() {
 					"selectedInTeams": [1]
 				}, {
 					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/9248.png"
 					}],
-					"id": 1565,
+					"id": 9248,
 					"rolesInTeams": [],
 					"selectedInTeams": []
 				}, {
 					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
+						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/15209.png"
 					}],
-					"id": 185218,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 432,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 177500,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 762,
+					"id": 15209,
 					"rolesInTeams": [{
 						"teamId": 1,
 						"role": null
-					}],
-					"selectedInTeams": [1]
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 2100,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 185033,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 1115,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 5982,
-					"rolesInTeams": [{
-						"teamId": 1,
+					}, {
+						"teamId": 2,
 						"role": null
 					}],
-					"selectedInTeams": [1]
+					"selectedInTeams": [1, 2]
 				}, {
 					"artwork": [{
 						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
 					}],
-					"id": 1512,
-					"rolesInTeams": [{
-						"teamId": 1,
-						"role": null
-					}],
-					"selectedInTeams": [1]
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 28796,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 72192,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 1573,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 1891,
-					"rolesInTeams": [{
-						"teamId": 1,
-						"role": null
-					}],
-					"selectedInTeams": [1]
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/partner-image/MenGoogle/10.png"
-					}],
-					"id": 10,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 894,
-					"rolesInTeams": [],
-					"selectedInTeams": []
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 11737,
-					"rolesInTeams": [{
-						"teamId": 1,
-						"role": null
-					}],
-					"selectedInTeams": [1]
-				}, {
-					"artwork": [{
-						"src": "https://d13ir53smqqeyp.cloudfront.net/player-images/default-player-image-men.png"
-					}],
-					"id": 8930,
+					"id": 158032,
 					"rolesInTeams": [],
 					"selectedInTeams": []
 				}]
