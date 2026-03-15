@@ -26,14 +26,46 @@ content-type: application/json
 content-length: 246
 accept-encoding: gzip
 
-{"query":"\n    query GetLeaderboardLatestEventInfo($site: String!, $roundId: Int!) {\n  leaderboardLatestEventId(roundId: $roundId)\n  match(site: $site, id: $roundId) {\n    status\n  }\n}\n    ","variables":{"site":"cricket","roundId":112970}}
+{
+	"query": "\n    query GetLeaderboardLatestEventInfo($site: String!, $roundId: Int!) {\n  leaderboardLatestEventId(roundId: $roundId)\n  match(site: $site, id: $roundId) {\n    status\n  }\n}\n    ",
+	"variables": {
+		"site": "cricket",
+		"roundId": 112970
+	}
+}
+
+{
+	"query": "\n    query GetLeaderboardLatestEventInfo($site: String!, $roundId: Int!) {\n  leaderboardLatestEventId(roundId: $roundId)\n  match(site: $site, id: $roundId) {\n    status\n  }\n}\n    ",
+	"variables": {
+		"site": "cricket",
+		"roundId": 112993
+	}
+}
+
 */
-export async function POST() {
+export async function POST(request: Request) {
+	const body = await request.json();
+	const { variables } = body;
+
+	const matchId = variables?.matchId;
+
+	if (matchId == 112970) {
+		return NextResponse.json({
+			"data": {
+				"leaderboardLatestEventId": 160,
+				"match": {
+					"status": "IN_PROGRESS"
+				}
+			}
+		});
+	}
+
+	// 112993
 	return NextResponse.json({
 		"data": {
-			"leaderboardLatestEventId": 160,
+			"leaderboardLatestEventId": 188,
 			"match": {
-				"status": "IN_PROGRESS"
+				"status": "COMPLETED"
 			}
 		}
 	});
