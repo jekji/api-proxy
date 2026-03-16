@@ -37,12 +37,10 @@ export async function POST(request: Request) {
 	const body = await request.json();
 	const { query, variables } = body;
 	
-	// Check if API_URL is configured in environment
-	const apiURL = process.env.API_URL;
-	
-	if (apiURL) {
+	if (process.env.API_URL) {
 		// Use real API to fetch data
 		try {
+			const apiURL = process.env.API_URL + "/graphql/query/react-native/home-upcoming-matches-v2";
 			const response = await fetch(apiURL, {
 				method: 'POST',
 				headers: BASEHEADERS,
@@ -53,7 +51,7 @@ export async function POST(request: Request) {
 			});
 			
 			if (!response.ok) {
-				throw new Error(`API request failed: ${response.status}`);
+				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(BASEHEADERS)}`);
 			}
 			
 			const data = await response.json();
