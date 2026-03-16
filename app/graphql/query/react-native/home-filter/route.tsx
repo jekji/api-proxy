@@ -1,3 +1,4 @@
+import { BASEHEADERS } from '@/constants';
 import { NextResponse } from 'next/server';
 
 /**
@@ -29,7 +30,37 @@ accept-encoding: gzip
 
 {"query":"\n    query HomeFilter($statuses: [MatchStatus], $source: String) {\n  homeMatchFilters(statuses: $statuses, source: $source) {\n    edges {\n      id\n      startTime\n      status\n      lineupAnnouncedTime\n      lineupStatus\n      matchHighlight {\n        text\n        color\n      }\n      squads {\n        id\n        shortName\n        flag {\n          src\n        }\n        squadColorPalette\n        fullName\n      }\n      tour {\n        id\n        name\n        slug\n        format\n      }\n      sportInfo {\n        slug\n        wlsId\n        gameId\n      }\n    }\n  }\n}\n    ","variables":{"statuses":["NOT_STARTED","IN_PROGRESS","COMPLETED","ABANDONED","WAITING_FOR_REVIEW"],"source":"home"}}
 */
-export async function POST() {
+export async function POST(request: Request) {
+	const body = await request.json();
+	const { query, variables } = body;
+	
+	if (process.env.API_URL) {
+		// Use real API to fetch data
+		try {
+			const apiURL = process.env.API_URL + "/graphql/query/react-native/home-filter";
+			const response = await fetch(apiURL, {
+				method: 'POST',
+				headers: BASEHEADERS,
+				body: JSON.stringify({
+					query,
+					variables
+				}),
+				// Next.js 特有缓存配置：每 300 秒刷新一次数据
+				next: { revalidate: 300 }
+			});
+			
+			if (!response.ok) {
+				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(BASEHEADERS)}`);
+			}
+			
+			const data = await response.json();
+			return NextResponse.json(data);
+		} catch (error) {
+			console.error('API request error:', error);
+			// Fall back to mock data if API fails
+		}
+	}
+	
 	return NextResponse.json({
 		"data": {
 			"homeMatchFilters": {
