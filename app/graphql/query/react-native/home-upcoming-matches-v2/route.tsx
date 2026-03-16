@@ -39,8 +39,8 @@ export async function POST(request: Request) {
 	
 	if (process.env.API_URL) {
 		// Use real API to fetch data
+		const apiURL = process.env.API_URL + "/graphql/query/react-native/home-upcoming-matches-v2";
 		try {
-			const apiURL = process.env.API_URL + "/graphql/query/react-native/home-upcoming-matches-v2";
 			const response = await fetch(apiURL, {
 				method: 'POST',
 				headers: BASEHEADERS,
@@ -53,13 +53,13 @@ export async function POST(request: Request) {
 			});
 			
 			if (!response.ok) {
-				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(BASEHEADERS)}`);
+				throw new Error(`API request failed: ${response.status}`);
 			}
 			
 			const data = await response.json();
 			return NextResponse.json(data);
 		} catch (error) {
-			console.error('API request error:', error);
+			console.error(`API request failed. URL: ${apiURL}, error: `, error);
 			// Fall back to mock data if API fails
 		}
 	}

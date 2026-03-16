@@ -58,29 +58,37 @@ export async function POST(request: Request) {
 	const body = await request.json();
 	const { query, variables } = body;
 	
+	// Extract headers from the incoming request
+	// const requestHeaders = Object.fromEntries(request.headers.entries());
+	
+	// requestHeaders['atlas'] = 'IN';
+	// requestHeaders['locale'] = 'en-US';
+
+	// console.log(`Headers: ${JSON.stringify(requestHeaders)}`);
+	
 	if (process.env.API_URL) {
 		// Use real API to fetch data
+		const apiURL = process.env.API_URL + "/graphql/query/react-native/my-teams-pre-rl-query";
 		try {
-			const apiURL = process.env.API_URL + "/graphql/query/react-native/my-teams-pre-rl-query";
 			const response = await fetch(apiURL, {
 				method: 'POST',
-				headers: BASEHEADERS,
+				headers: BASEHEADERS, //requestHeaders,
 				body: JSON.stringify({
 					query,
 					variables
 				}),
-				// Next.js 特有缓存配置：每 60 秒刷新一次数据
-				next: { revalidate: 60 }
+				// Next.js 特有缓存配置：每 300 秒刷新一次数据
+				//next: { revalidate: 300 }
 			});
 			
 			if (!response.ok) {
-				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(BASEHEADERS)}`);
+				throw new Error(`API request failed: ${response.status}`);
 			}
 			
 			const data = await response.json();
 			return NextResponse.json(data);
 		} catch (error) {
-			console.error('API request error:', error);
+			console.error(`API request failed. URL: ${apiURL}, error: `, error);
 			// Fall back to mock data if API fails
 		}
 	}
