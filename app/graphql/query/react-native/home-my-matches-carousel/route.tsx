@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { BASEHEADERS } from '@/constants';
 
 /**
 :method: POST
@@ -28,7 +29,37 @@ accept-encoding: gzip
 
 {"query":"\n    query HomeMyMatchesCarousel($showJoinCount: Boolean = true, $carouselClickThreshold: Int = 1) {\n  matches: newHomeMyMatches(\n    pageNo: 0\n    first: 5\n    isMatchCarousel: true\n    carouselClickThreshold: $carouselClickThreshold\n  ) {\n    edges {\n      ...MyMatchesMatchData\n    }\n  }\n}\n    \n    fragment MyMatchesMatchData on Match {\n  id\n  name\n  startTime\n  matchDetail\n  myMatchesJoinedContestCount @include(if: $showJoinCount)\n  winningsAmount @include(if: $showJoinCount)\n  myMatchesUserTeamsCount @include(if: $showJoinCount)\n  status\n  lineupStatus\n  isFantasyLiveMatchAvailable\n  matchHighlight {\n    text\n    color\n  }\n  squads {\n    squadColorPalette\n    id\n    name\n    shortName\n    flag {\n      src\n    }\n    flagWithName {\n      src\n    }\n    fullName\n  }\n  tour {\n    id\n    name\n    format\n    tourDisplayTag\n  }\n  sportInfo {\n    slug\n    wlsId\n  }\n}\n    ","variables":{"showJoinCount":true,"carouselClickThreshold":1}}
  */
-export async function POST() {
+export async function POST(request: Request) {
+	const body = await request.json();
+	const { query, variables } = body;
+	
+	if (process.env.API_URL) {
+		// Use real API to fetch data
+		try {
+			const apiURL = process.env.API_URL + "/graphql/query/react-native/home-my-matches-carousel";
+			const response = await fetch(apiURL, {
+				method: 'POST',
+				headers: BASEHEADERS,
+				body: JSON.stringify({
+					query,
+					variables
+				}),
+				// Next.js 特有缓存配置：每 60 秒刷新一次数据
+				next: { revalidate: 60 }
+			});
+			
+			if (!response.ok) {
+				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(BASEHEADERS)}`);
+			}
+			
+			const data = await response.json();
+			return NextResponse.json(data);
+		} catch (error) {
+			console.error('API request error:', error);
+			// Fall back to mock data if API fails
+		}
+	}
+	
 	return NextResponse.json({
 		"data": {
 			"matches": {
