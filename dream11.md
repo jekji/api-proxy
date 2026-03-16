@@ -11,3 +11,13 @@ https://www.dream11.com/graphql/query/react-native/fetch-team-preview
 https://www.dream11.com/graphql/query/react-native/personalised-scorecard-query
 ```
 
+## Fantasy Tab
+
+```
+https://www.dream11.com/graphql/query/react-native/home-upcoming-matches-v2
+https://www.dream11.com/graphql/query/react-native/home-my-matches-carousel
+https://www.dream11.com/graphql/query/react-native/contest-home-tabs-query
+https://www.dream11.com/graphql/query/react-native/contest-home-query
+https://www.dream11.com/graphql/query/react-native/shme-contest-home-footer-team-count-query
+https://app.dream11.com/graphql/query/react-native/get-rounds-live-stream-data
+```

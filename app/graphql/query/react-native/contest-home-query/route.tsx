@@ -1,3 +1,4 @@
+import { BASEHEADERS } from '@/constants';
 import { NextResponse } from 'next/server';
 
 /**
@@ -27,8 +28,39 @@ content-length: 2310
 accept-encoding: gzip
 
 {"query":"\n    query ContestHomeQuery($site: String!, $tourId: Int!, $matchId: Int!, $limit: Int, $shouldFetchSquads: Boolean = false, $slotType: [SlotTypeContest!] = [], $promotionalMediaEnabled: Boolean = true) {\n  site(slug: $site) {\n    maxTeamsAllowed\n  }\n  match(site: $site, id: $matchId) {\n    name\n    id\n    startTime\n    status\n    lineupStatus\n    squads @include(if: $shouldFetchSquads) {\n      flag {\n        src\n      }\n      squadColorPalette\n      shortName\n    }\n    userTeamsCount\n  }\n  contestSections(\n    site: $site\n    matchId: $matchId\n    tourId: $tourId\n    withPromotions: true\n    isLiteRequest: false\n  ) {\n    id\n    name\n    description\n    totalContestCount\n    displayContestCount\n    tag {\n      text\n    }\n    sectionType\n    displayContests {\n      ...ContestSectionItem\n    }\n  }\n}\n    \n    fragment ContestSectionItem on Contest {\n  campaignSlot(slotType: $slotType) @include(if: $promotionalMediaEnabled) {\n    slotType\n    mediaType\n    mediaUrl\n  }\n  convertedCampaignSlot(slotType: $slotType) @include(if: $promotionalMediaEnabled) {\n    slotType\n    mediaType\n    mediaUrl\n  }\n  contestTag\n  contestTypeDisplayText\n  adConfig {\n    dealType\n  }\n  spotsDisplayText\n  explanation\n  joinedTeamsCount\n  contestName\n  convertedContestName\n  contestCategory\n  contestType\n  contestSize\n  currentSize\n  isPartnerContest\n  behaviour\n  id\n  productId\n  inviteCode\n  isGuaranteed\n  isMultipleEntry\n  numberOfWinners\n  winnerPercent\n  maxAllowedTeams\n  isFreeEntry\n  prizeDisplayText\n  convertedPrizeDisplayText\n  hasJoined\n  joinedTeamsCount\n  winnerBreakupContestHomeV2 {\n    amount {\n      amount\n      code\n      symbol\n    }\n    convertedAmount {\n      amount\n      code\n      symbol\n    }\n    convertedPrizeDisplayText\n    prizeDisplayText\n    show\n    startRank\n    endRank\n    winnerPercent\n    imageUrl\n  }\n  winnerBreakup(limit: $limit) {\n    prizeDisplayText\n    amount {\n      amount\n      symbol\n    }\n  }\n  prizeAmount {\n    amount\n    symbol\n  }\n  match {\n    startTime\n  }\n}\n    ","variables":{"matchId":112992,"site":"cricket","tourId":5390,"shouldFetchSquads":true,"slotType":["CONTEST_CARD_PRE_RL"],"promotionalMediaEnabled":true,"limit":10}}
- */
-export async function POST() {
+
+*/
+export async function POST(request: Request) {
+	const body = await request.json();
+	const { query, variables } = body;
+	
+	if (process.env.API_URL) {
+		// Use real API to fetch data
+		try {
+			const apiURL = process.env.API_URL + "/graphql/query/react-native/contest-home-query";
+			const response = await fetch(apiURL, {
+				method: 'POST',
+				headers: BASEHEADERS,
+				body: JSON.stringify({
+					query,
+					variables
+				}),
+				// Next.js 特有缓存配置：每 60 秒刷新一次数据
+				next: { revalidate: 60 }
+			});
+			
+			if (!response.ok) {
+				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(BASEHEADERS)}`);
+			}
+			
+			const data = await response.json();
+			return NextResponse.json(data);
+		} catch (error) {
+			console.error('API request error:', error);
+			// Fall back to mock data if API fails
+		}
+	}
+	
 	return NextResponse.json({
 		"data": {
 			"site": {

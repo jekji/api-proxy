@@ -47,7 +47,9 @@ export async function POST(request: Request) {
 				body: JSON.stringify({
 					query,
 					variables
-				})
+				}),
+				// Next.js 特有缓存配置：每 300 秒刷新一次数据
+				next: { revalidate: 300 }
 			});
 			
 			if (!response.ok) {
