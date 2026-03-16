@@ -1,3 +1,4 @@
+import { BASEHEADERS } from '@/constants';
 import { NextResponse } from 'next/server';
 
 /**
@@ -42,10 +43,47 @@ accept-encoding: gzip
 	}
 }
 
+{
+	"query": "\n    query MyTeamsPreRLQuery($site: String!, $matchId: Int!, $isPostLineupsSinglePageCTEnabled: Boolean = false, $isQueryDeprecated: Boolean = true) {\n  match(site: $site, id: $matchId) {\n    tour {\n      id\n    }\n    substitutionInfo {\n      maxSubsAllowed\n      isTeamCompareActive\n      teamCompareText\n    }\n    squads {\n      id\n      name\n      shortName\n      playerTextBgColor\n      playerTextFontColor\n    }\n    matchHighlight {\n      text\n    }\n    displayLineupOrder\n    lineupOrderExpected\n    userTeamsCount\n    userTeam {\n      user {\n        userType\n      }\n    }\n    userTeams {\n      id\n      name\n      site\n      totalPoints\n      match {\n        __typename\n        id\n        status\n        startTime\n        name\n      }\n      playerType {\n        __typename\n        id\n        maxPerTeam\n        minPerTeam\n        name\n        shortName\n      }\n      players {\n        __typename\n        id\n        name\n        nameInitial\n        points\n        credits\n        artwork {\n          __typename\n          src\n        }\n        squad {\n          __typename\n          id\n          name\n          jerseyColor\n          shortName\n          squadColorPalette\n          playerTextBgColor\n          playerTextFontColor\n          fullName\n          flag {\n            __typename\n            src\n            type\n          }\n          flagWithName {\n            __typename\n            src\n            type\n          }\n        }\n        role {\n          id\n          pointMultiplier\n          shortName\n          name\n          artwork {\n            src\n          }\n          color\n        }\n        lineupStatus {\n          __typename\n          status\n          text\n          color\n        }\n        type {\n          __typename\n          id\n          maxPerTeam\n          minPerTeam\n          name\n          shortName\n        }\n        substituteInfo {\n          isSub\n          priority\n          replacedWith {\n            id\n            role {\n              shortName\n            }\n          }\n        }\n      }\n      squads {\n        __typename\n        id\n        shortName\n        name\n      }\n      playerRoles {\n        id\n        pointMultiplier\n        shortName\n        name\n        artwork {\n          src\n        }\n        color\n      }\n      catalogTeamDetails @skip(if: $isQueryDeprecated) {\n        contestTypePill\n        sharedTeamStatus\n        sellerImageUrl\n        sellerId\n        sellerTeamId\n        sellerTeamUpdatedAt\n        productId\n        snapshotId\n        userSnapshotId\n        teamCategory\n        teamPrice\n        lastClonedAt\n        isContentAvailable\n        isContentUpdated\n        isTeamUpdated\n        teamShareCount\n        publishCount\n        latestAudioUrl\n      }\n    }\n    roundLineupStatus @include(if: $isPostLineupsSinglePageCTEnabled)\n  }\n  me @skip(if: $isQueryDeprecated) {\n    userType\n    expertStats {\n      sportId\n    }\n  }\n  site(slug: $site) {\n    maxTeamsAllowed\n    id\n    gameId\n  }\n}\n    ",
+	"variables": {
+		"site": "cricket",
+		"matchId": 113005,
+		"showDreamTeam": false,
+		"isPostLineupsSinglePageCTEnabled": true
+	}
+}
+
 */
 export async function POST(request: Request) {
 	const body = await request.json();
-	const { variables } = body;
+	const { query, variables } = body;
+	
+	if (process.env.API_URL) {
+		// Use real API to fetch data
+		try {
+			const apiURL = process.env.API_URL + "/graphql/query/react-native/my-teams-pre-rl-query";
+			const response = await fetch(apiURL, {
+				method: 'POST',
+				headers: BASEHEADERS,
+				body: JSON.stringify({
+					query,
+					variables
+				}),
+				// Next.js 特有缓存配置：每 60 秒刷新一次数据
+				next: { revalidate: 60 }
+			});
+			
+			if (!response.ok) {
+				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(BASEHEADERS)}`);
+			}
+			
+			const data = await response.json();
+			return NextResponse.json(data);
+		} catch (error) {
+			console.error('API request error:', error);
+			// Fall back to mock data if API fails
+		}
+	}
 
 	const matchId = variables?.matchId;
 

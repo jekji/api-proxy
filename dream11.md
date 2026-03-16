@@ -33,7 +33,9 @@ https://app.dream11.com/graphql/query/react-native/get-rounds-live-stream-data
 ## create team
 
 ```
+https://www.dream11.com/graphql/query/react-native/my-teams-pre-rl-query
 https://www.dream11.com/graphql/query/react-native/create-team
 https://www.dream11.com/graphql/query/react-native/player-sort-stats
 https://www.dream11.com/graphql/query/react-native/app-message-query
+https://www.dream11.com/graphql/query/react-native/eligible-backup-players
 ```
