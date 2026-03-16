@@ -8,5 +8,6 @@ https://www.dream11.com/graphql/query/react-native/get-leaderboard-latest-event-
 https://www.dream11.com/graphql/query/react-native/my-teams-pre-rl-query
 https://www.dream11.com/graphql/query/react-native/my-contests-post-round-lock
 https://www.dream11.com/graphql/query/react-native/fetch-team-preview
+https://www.dream11.com/graphql/query/react-native/personalised-scorecard-query
 ```
 

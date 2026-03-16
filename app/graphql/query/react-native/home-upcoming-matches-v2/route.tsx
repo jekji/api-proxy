@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { BASEHEADERS } from '@/constants';
 
 /**
 :method: POST
@@ -26,10 +27,44 @@ authorization: Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsInR5cCI6ImF0K2p3dCIsIm
 content-type: application/json
 content-length: 982
 accept-encoding: gzip
+cookie: __refreshToken=HnwZbqZGEOGRjPOhPtgpE0R8zkKWTE9u; dh_user_id=4c1e2720-2090-11f1-8bfe-cdefa134efa5
 
-{"query":"\n    query HomeUpcomingMatchesV2($slug: String!, $pageCount: Int!, $pageSize: Int!, $category: HomeUpcomingMatchesCategory!, $shouldShowPinnedMatchesInRST: Boolean) {\n  site(slug: $slug) {\n    matchCentre(\n      page: $pageCount\n      pageSize: $pageSize\n      category: $category\n      shouldShowPinnedMatchesInRST: $shouldShowPinnedMatchesInRST\n    ) {\n      edges {\n        id\n        startTime\n        matchPrizeInfo {\n          amountInWords\n          isGuaranteedPlus\n          title\n        }\n        status\n        lineupStatus\n        squads {\n          id\n          shortName\n          flag {\n            src\n          }\n          squadColorPalette\n        }\n        squadBigPlayerImages {\n          id\n          imageUrl\n        }\n        tour {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n    ","variables":{"slug":"cricket","pageCount":1,"pageSize":10,"category":"RST","shouldShowPinnedMatchesInRST":true}}
- */
-export async function POST() {
+{"query":"\n    query HomeUpcomingMatchesV2($slug: String!, $pageCount: Int!, $pageSize: Int!, $category: HomeUpcomingMatchesCategory!, $shouldShowPinnedMatchesInRST: Boolean) {\n  site(slug: $slug) {\n    matchCentre(\n      page: $pageCount\n      pageSize: $pageSize\n      category: $category\n      shouldShowPinnedMatchesInRST: $shouldShowPinnedMatchesInRST\n    ) {\n      edges {\n        id\n        startTime\n        matchPrizeInfo {\n          amountInWords\n          isGuaranteedPlus\n          title\n        }\n        status\n        lineupStatus\n        squads {\n          id\n          shortName\n          flag {\n            src\n          }\n          squadColorPalette\n        }\n        squadBigPlayerImages {\n          id\n          imageUrl\n        }\n        tour {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n    ","variables":{"slug":"cricket","pageCount":1,"pageSize":50,"category":"RST","shouldShowPinnedMatchesInRST":true}}
+
+* 即将开赛的赛事
+*/
+export async function POST(request: Request) {
+	const body = await request.json();
+	const { query, variables } = body;
+	
+	// Check if API_URL is configured in environment
+	const apiURL = process.env.API_URL;
+	
+	if (apiURL) {
+		// Use real API to fetch data
+		try {
+			const response = await fetch(apiURL, {
+				method: 'POST',
+				headers: BASEHEADERS,
+				body: JSON.stringify({
+					query,
+					variables
+				})
+			});
+			
+			if (!response.ok) {
+				throw new Error(`API request failed: ${response.status}`);
+			}
+			
+			const data = await response.json();
+			return NextResponse.json(data);
+		} catch (error) {
+			console.error('API request error:', error);
+			// Fall back to mock data if API fails
+		}
+	}
+	
+	// Mock data fallback
 	return NextResponse.json({
 		"data": {
 			"site": {
