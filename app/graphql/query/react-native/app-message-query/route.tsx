@@ -27,6 +27,17 @@ content-length: 326
 accept-encoding: gzip
 
 {"query":"\n    query AppMessageQuery($site: String!, $matchId: Int!, $tourId: Int!, $source: String!) {\n  appMessage(site: $site, matchId: $matchId, tourId: $tourId, source: $source) {\n    text\n    textColor\n    bgColor\n  }\n}\n    ","variables":{"site":"cricket","matchId":112992,"tourId":5390,"source":"SPCT_CONCISE"}}
+
+{
+	"query": "\n    query AppMessageQuery($site: String!, $matchId: Int!, $tourId: Int!, $source: String!) {\n  appMessage(site: $site, matchId: $matchId, tourId: $tourId, source: $source) {\n    text\n    textColor\n    bgColor\n  }\n}\n    ",
+	"variables": {
+		"site": "cricket",
+		"matchId": 113005,
+		"tourId": 5393,
+		"source": "SPCT_CONCISE"
+	}
+}
+
 */
 export async function POST() {
 	return NextResponse.json({

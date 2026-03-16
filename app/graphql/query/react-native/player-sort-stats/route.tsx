@@ -1,3 +1,4 @@
+import { BASEHEADERS } from '@/constants';
 import { NextResponse } from 'next/server';
 
 /**
@@ -27,8 +28,47 @@ content-length: 477
 accept-encoding: gzip
 
 {"query":"\n    query PlayerSortStats($site: String!, $matchId: Int!) {\n  match(site: $site, id: $matchId) {\n    allStats {\n      defaultStat\n      statFilterEnabled\n      statInfo {\n        statLevel\n        shortDisplayName\n        displayName\n        statType\n        displayOn\n      }\n      stats {\n        playerId\n        stats {\n          statType\n          value\n        }\n      }\n    }\n  }\n}\n    ","variables":{"site":"cricket","matchId":112992}}
+
+{
+	"query": "\n    query PlayerSortStats($site: String!, $matchId: Int!) {\n  match(site: $site, id: $matchId) {\n    allStats {\n      defaultStat\n      statFilterEnabled\n      statInfo {\n        statLevel\n        shortDisplayName\n        displayName\n        statType\n        displayOn\n      }\n      stats {\n        playerId\n        stats {\n          statType\n          value\n        }\n      }\n    }\n  }\n}\n    ",
+	"variables": {
+		"site": "cricket",
+		"matchId": 113005
+	}
+}
+
 */
-export async function POST() {
+export async function POST(request: Request) {
+	const body = await request.json();
+	const { query, variables } = body;
+	
+	if (process.env.API_URL) {
+		// Use real API to fetch data
+		try {
+			const apiURL = process.env.API_URL + "/graphql/query/react-native/player-sort-stats";
+			const response = await fetch(apiURL, {
+				method: 'POST',
+				headers: BASEHEADERS,
+				body: JSON.stringify({
+					query,
+					variables
+				}),
+				// Next.js 特有缓存配置：每 60 秒刷新一次数据
+				next: { revalidate: 60 }
+			});
+			
+			if (!response.ok) {
+				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(BASEHEADERS)}`);
+			}
+			
+			const data = await response.json();
+			return NextResponse.json(data);
+		} catch (error) {
+			console.error('API request error:', error);
+			// Fall back to mock data if API fails
+		}
+	}
+	
 	return NextResponse.json({
 		"data": {
 			"match": {

@@ -29,3 +29,11 @@ https://www.dream11.com/graphql/query/react-native/contest-home-query
 https://www.dream11.com/graphql/query/react-native/shme-contest-home-footer-team-count-query
 https://app.dream11.com/graphql/query/react-native/get-rounds-live-stream-data
 ```
+
+## create team
+
+```
+https://www.dream11.com/graphql/query/react-native/create-team
+https://www.dream11.com/graphql/query/react-native/player-sort-stats
+https://www.dream11.com/graphql/query/react-native/app-message-query
+```

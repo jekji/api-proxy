@@ -1,3 +1,4 @@
+import { BASEHEADERS } from '@/constants';
 import { NextResponse } from 'next/server';
 
 /**
@@ -27,8 +28,51 @@ content-length: 3740
 accept-encoding: gzip
 
 {"query":"\n    query CreateTeam($site: String!, $tourId: Int!, $teamId: Int = -1, $matchId: Int!, $isPreLineupsEnabled: Boolean = true, $isPostLineupsSinglePageCTEnabled: Boolean = false) {\n  site(slug: $site) {\n    id\n    name\n    maxTeamsAllowed\n    showTeamCombination {\n      count\n    }\n    teamCriteria {\n      totalCredits\n      maxPlayerPerSquad\n      totalPlayerCount\n    }\n    roles {\n      id\n      artwork {\n        src\n      }\n      color\n      name\n      pointMultiplier\n      shortName\n    }\n    playerTypes {\n      id\n      name\n      minPerTeam\n      maxPerTeam\n      shortName\n    }\n    tour(id: $tourId) {\n      id\n      name\n      match(id: $matchId) {\n        id\n        displayLineupOrder\n        lineupOrderExpected\n        userTeamsCount\n        matchHighlight {\n          color\n          text\n        }\n        squads {\n          flag {\n            src\n          }\n          squadColorPalette\n          flagWithName {\n            src\n          }\n          id\n          jerseyColor\n          name\n          shortName\n          fullName\n          playerTextBgColor\n          playerTextFontColor\n        }\n        showPlayerImages\n        startTime\n        status\n        tossResult\n        tossInfo {\n          wonBySquadId\n          wonBySquadShortName\n          decision\n          tossText\n        }\n        substitutionInfo {\n          maxSubsAllowed\n          status\n          teamPreviewText\n        }\n        players(teamId: $teamId, sendDifferentLineupsStatusKey: true) {\n          artwork {\n            src\n          }\n          squad {\n            id\n            name\n            jerseyColor\n            shortName\n            playerTextBgColor\n            playerTextFontColor\n          }\n          credits\n          statistics {\n            selectionRate\n            role {\n              id\n              selectionRate\n            }\n          }\n          id\n          name\n          nameInitial\n          points\n          type {\n            id\n            maxPerTeam\n            minPerTeam\n            name\n            shortName\n          }\n          isSelected\n          isSelectedInSharedTeam\n          role {\n            id\n            artwork {\n              src\n            }\n            color\n            name\n            pointMultiplier\n            shortName\n          }\n          lineupOrder\n          battingOrder @include(if: $isPostLineupsSinglePageCTEnabled)\n          isAvailable @include(if: $isPreLineupsEnabled)\n          lineupStatus {\n            status\n            text\n            color\n          }\n          playingStyleIcon {\n            src\n          }\n          substituteInfo(skipSubstituteInfo: false) {\n            isSub\n            priority\n            replacedWith {\n              id\n              role {\n                shortName\n              }\n            }\n          }\n        }\n        playingStyleLegends {\n          iconUrl {\n            src\n          }\n          text\n          legendId\n        }\n        roundLineupStatus @include(if: $isPostLineupsSinglePageCTEnabled)\n        preLineupsNote @include(if: $isPreLineupsEnabled)\n        lineupGroups @include(if: $isPostLineupsSinglePageCTEnabled) {\n          squadId\n          groups {\n            name\n            displayText\n            color\n            order\n            playerStatuses\n            displayBattingOrder\n          }\n        }\n      }\n    }\n  }\n  me {\n    isGuestUser\n    teamName\n    userType\n  }\n}\n    ","variables":{"site":"cricket","tourId":5390,"matchId":112992,"isPreLineupsEnabled":true,"isPostLineupsSinglePageCTEnabled":true}}
+
+{
+	"query": "\n    query CreateTeam($site: String!, $tourId: Int!, $teamId: Int = -1, $matchId: Int!, $isPreLineupsEnabled: Boolean = true, $isPostLineupsSinglePageCTEnabled: Boolean = false) {\n  site(slug: $site) {\n    id\n    name\n    maxTeamsAllowed\n    showTeamCombination {\n      count\n    }\n    teamCriteria {\n      totalCredits\n      maxPlayerPerSquad\n      totalPlayerCount\n    }\n    roles {\n      id\n      artwork {\n        src\n      }\n      color\n      name\n      pointMultiplier\n      shortName\n    }\n    playerTypes {\n      id\n      name\n      minPerTeam\n      maxPerTeam\n      shortName\n    }\n    tour(id: $tourId) {\n      id\n      name\n      match(id: $matchId) {\n        id\n        displayLineupOrder\n        lineupOrderExpected\n        userTeamsCount\n        matchHighlight {\n          color\n          text\n        }\n        squads {\n          flag {\n            src\n          }\n          squadColorPalette\n          flagWithName {\n            src\n          }\n          id\n          jerseyColor\n          name\n          shortName\n          fullName\n          playerTextBgColor\n          playerTextFontColor\n        }\n        showPlayerImages\n        startTime\n        status\n        tossResult\n        tossInfo {\n          wonBySquadId\n          wonBySquadShortName\n          decision\n          tossText\n        }\n        substitutionInfo {\n          maxSubsAllowed\n          status\n          teamPreviewText\n        }\n        players(teamId: $teamId, sendDifferentLineupsStatusKey: true) {\n          artwork {\n            src\n          }\n          squad {\n            id\n            name\n            jerseyColor\n            shortName\n            playerTextBgColor\n            playerTextFontColor\n          }\n          credits\n          statistics {\n            selectionRate\n            role {\n              id\n              selectionRate\n            }\n          }\n          id\n          name\n          nameInitial\n          points\n          type {\n            id\n            maxPerTeam\n            minPerTeam\n            name\n            shortName\n          }\n          isSelected\n          isSelectedInSharedTeam\n          role {\n            id\n            artwork {\n              src\n            }\n            color\n            name\n            pointMultiplier\n            shortName\n          }\n          lineupOrder\n          battingOrder @include(if: $isPostLineupsSinglePageCTEnabled)\n          isAvailable @include(if: $isPreLineupsEnabled)\n          lineupStatus {\n            status\n            text\n            color\n          }\n          playingStyleIcon {\n            src\n          }\n          substituteInfo(skipSubstituteInfo: false) {\n            isSub\n            priority\n            replacedWith {\n              id\n              role {\n                shortName\n              }\n            }\n          }\n        }\n        playingStyleLegends {\n          iconUrl {\n            src\n          }\n          text\n          legendId\n        }\n        roundLineupStatus @include(if: $isPostLineupsSinglePageCTEnabled)\n        preLineupsNote @include(if: $isPreLineupsEnabled)\n        lineupGroups @include(if: $isPostLineupsSinglePageCTEnabled) {\n          squadId\n          groups {\n            name\n            displayText\n            color\n            order\n            playerStatuses\n            displayBattingOrder\n          }\n        }\n      }\n    }\n  }\n  me {\n    isGuestUser\n    teamName\n    userType\n  }\n}\n    ",
+	"variables": {
+		"site": "cricket",
+		"tourId": 5393,
+		"teamId": -1,
+		"matchId": 113005,
+		"isPreLineupsEnabled": true,
+		"isPostLineupsSinglePageCTEnabled": true
+	}
+}
+
 */
-export async function POST() {
+export async function POST(request: Request) {
+	const body = await request.json();
+	const { query, variables } = body;
+	
+	if (process.env.API_URL) {
+		// Use real API to fetch data
+		try {
+			const apiURL = process.env.API_URL + "/graphql/query/react-native/create-team";
+			const response = await fetch(apiURL, {
+				method: 'POST',
+				headers: BASEHEADERS,
+				body: JSON.stringify({
+					query,
+					variables
+				}),
+				// Next.js 特有缓存配置：每 60 秒刷新一次数据
+				next: { revalidate: 60 }
+			});
+			
+			if (!response.ok) {
+				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(BASEHEADERS)}`);
+			}
+			
+			const data = await response.json();
+			return NextResponse.json(data);
+		} catch (error) {
+			console.error('API request error:', error);
+			// Fall back to mock data if API fails
+		}
+	}
+	
 	return NextResponse.json({
 		"data": {
 			"site": {
