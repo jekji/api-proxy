@@ -27,6 +27,12 @@ content-length: 477
 accept-encoding: gzip
 
 {"query":"\n    query ProfileDetailsQuery {\n  phoneSyncPrivacySettings {\n    status\n  }\n  states {\n    name\n    id\n    isBanned\n  }\n  me {\n    id\n    emailId\n    name\n    mobileNumber\n    dob\n    gender\n    verified\n    isMobileVerified\n    address\n    city\n    zipcode\n    state {\n      id\n      name\n    }\n    country {\n      name\n    }\n    userProperties {\n      allowSmsNotification\n    }\n    stateChangeAllowed\n  }\n}\n    ","variables":{}}
+
+{
+	"query": "\n    query ProfileDetailsQuery {\n  phoneSyncPrivacySettings {\n    status\n  }\n  states {\n    name\n    id\n    isBanned\n  }\n  me {\n    id\n    emailId\n    name\n    mobileNumber\n    dob\n    gender\n    verified\n    isMobileVerified\n    address\n    city\n    zipcode\n    state {\n      id\n      name\n    }\n    country {\n      name\n    }\n    userProperties {\n      allowSmsNotification\n    }\n    stateChangeAllowed\n  }\n}\n    ",
+	"variables": {}
+}
+
 */
 export async function POST() {
 	return NextResponse.json({

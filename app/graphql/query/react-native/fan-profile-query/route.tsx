@@ -27,18 +27,29 @@ content-length: 539
 accept-encoding: gzip
 
 {"query":"\n    query FanProfileQuery($userId: Int!, $pageNo: Int, $pageSize: Int, $isMiniProfile: Boolean) {\n  user(userId: $userId, isMiniProfile: $isMiniProfile) {\n    userInfo {\n      id\n      teamName\n      profilePicUrl\n      userType\n      playingSince\n      shortRefCode\n    }\n  }\n  favorites(userId: $userId, pageNo: $pageNo, pageSize: $pageSize) {\n    items {\n      id\n      name\n      imageUrl\n      entityType\n    }\n  }\n}\n    ","variables":{"userId":320199858,"pageNo":1,"pageSize":6,"isMiniProfile":false}}
- */
+
+{
+	"query": "\n    query FanProfileQuery($userId: Int!, $pageNo: Int, $pageSize: Int, $isMiniProfile: Boolean) {\n  user(userId: $userId, isMiniProfile: $isMiniProfile) {\n    userInfo {\n      id\n      teamName\n      profilePicUrl\n      userType\n      playingSince\n      shortRefCode\n    }\n  }\n  favorites(userId: $userId, pageNo: $pageNo, pageSize: $pageSize) {\n    items {\n      id\n      name\n      imageUrl\n      entityType\n    }\n  }\n}\n    ",
+	"variables": {
+		"userId": 317152330,
+		"pageNo": 1,
+		"pageSize": 6,
+		"isMiniProfile": false
+	}
+}
+
+*/
 export async function POST() {
 	return NextResponse.json({
 		"data": {
 			"user": {
 				"userInfo": {
-					"id": 320199858,
-					"teamName": "TONYASI LEADERS",
+					"id": 317152330,
+					"teamName": "AARONTH CONQUERERS",
 					"profilePicUrl": "",
 					"userType": "NORMAL",
-					"playingSince": "2026-03-15T03:22:15Z",
-					"shortRefCode": "TONYAS16QR"
+					"playingSince": "2025-12-07T23:01:09Z",
+					"shortRefCode": "AARONT105HI"
 				}
 			},
 			"favorites": {
