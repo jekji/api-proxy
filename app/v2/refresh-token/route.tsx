@@ -60,6 +60,8 @@ export async function POST(request: Request) {
 			}
 			
 			const data = await apiResponse.json();
+
+			console.log("refresh-token", refresh_token, "client_id", client_id, "data", JSON.stringify(data));
 			
 			// 保存新token到文件
 			try {
