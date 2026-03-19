@@ -42,10 +42,10 @@ export async function POST(request: Request) {
 	const body = await request.json();
 	const { query, variables } = body;
 	
-	if (process.env.API_URL) {
+	if (process.env.WWW_GRAPHAL_URL) {
 		// Use real API to fetch data
 		try {
-			const apiURL = process.env.API_URL + "/graphql/query/react-native/player-sort-stats";
+			const apiURL = process.env.WWW_GRAPHAL_URL + "/graphql/query/react-native/player-sort-stats";
 			const response = await fetch(apiURL, {
 				method: 'POST',
 				headers: BASEHEADERS,

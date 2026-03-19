@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { tokenManager } from '@/lib/token-manager';
 
 /**
 :method: POST
@@ -27,19 +28,64 @@ accept-encoding: gzip
 
 {"state":"pQDIRgruCq","otp":"336781","client_id":"a8EsDlPc3ZCVgsUpppuc"}
 */
-export async function POST() {
-	return NextResponse.json({
-		"access_token": "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsInR5cCI6ImF0K2p3dCIsImtpZCI6IlRqb0FsLVdyZWN3Z3MtZVVvcm5xWWE5Y2x4dyJ9.eyJhdWQiOiJhOEVzRGxQYzNaQ1Znc1VwcHB1YyIsImV4cCI6MTc3MzYzMTQ2NywiaWF0IjoxNzczNTQ1MDY3LCJpc3MiOiJkcmVhbTExLmNvbSIsInN1YiI6IjMyMDE5OTg1OCIsImp0aSI6IjVqM3U4OVFNeFpNZG5tMXRsUXExVE5QenpGbnBGRGpmIiwidGlkIjoiMiIsInJmdF9pZCI6Ijc2NjYxMTYzODVGMzhEMUZGMjhFODBBNkQ1MTREM0Y0IiwiY2xpZW50X2lkIjoiYThFc0RsUGMzWkNWZ3NVcHBwdWMiLCJzY29wZSI6ImRyZWFtMTE6YWxsIiwiYW1yIjpbIm90cCJdLCJjb3VudHJ5Q29kZSI6IlVTIn0.QTfxN08TdhvuPEhZNVDyHmUDOpEN3N3XkgKl7tvRgx5A-3Wr4jQBdi9TW61RFYOPtJVt8dh-sxngrMPEDuHOcf-7-35gdD3NJmfc_Zim7umGjjm6U_aGF_2WSs10qp7e4dhAooeth2JEanpHAfUsf85SEThGTpSUBDKBaMg4Ly6V3T2D1hLb1EDxQNvLetcmBzJagOHu34SjTSEdWVbRTCWtwwvoklx1SyM7Ci34Z6H4Uioo5o1lisTtzyn6f74IkNoURQCiwYTZCS45h6-yKpBH4gsIsbG5gY0qvnYWKIfNBCcfSed9131iEn8zLEgvnWVlofrMLu7XPdEaHZFENQ",
-		"refresh_token": "7sVPEKChECZMIOiWGEOyxFW04P8Isz0F",
-		"id_token": "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6IlRqb0FsLVdyZWN3Z3MtZVVvcm5xWWE5Y2x4dyJ9.eyJhdWQiOiJhOEVzRGxQYzNaQ1Znc1VwcHB1YyIsImV4cCI6MTc3MzU0NTY2NywiaWF0IjoxNzczNTQ1MDY3LCJpc3MiOiJkcmVhbTExLmNvbSIsInN1YiI6IjMyMDE5OTg1OCIsInVzZXJJZCI6IjMyMDE5OTg1OCIsImVtYWlsSWQiOiJ0b255YXNpbW15c2I1N0BnbWFpbC5jb20ifQ.SSmxcD8Nqz57TToiTacj4sUWAE_JsugF2cI0tX50rnn7Cn89r9L3_ia5eOswXgC8DkZe1uw5jgFkBo3_hQTWd1YRS8AJ0BxbblI2lHzVt1JsqGBPqru_ADshj2vHeVYDW8CXMnRLU4Ndu7dfWVjPc26GruqMZN9WrmZ0g1GilJV9lZQujuGz-KurDDJ8q-CDgN9k-1ZvDeydYIWVBac3PSC2LGlvmy1viRLbPMw6cKDQ9poDyEBVJ0WYBe-RX4B5hBmCQmc8lotNO82_cY0ll97p0U7BBOuxRvJ3XvwFkLhYiogLPdMFw8oJB2UBEwfjd01k0_yJqP-3x3M5R-HoaQ",
-		"sso_token": "y0aFyuUPCli32C6",
-		"token_type": "Bearer",
-		"expires_in": 86400,
-		"is_new_user": false,
-		"mfa_factors": [],
-		"is_mobile_verified": false,
-		"account_restored": false
-	});
+export async function POST(request: Request) {
+	const body = await request.json();
+	const { client_id, state, otp } = body;
+	
+	// 优先从文件中读取现有token
+	const existingToken = tokenManager.getToken(client_id);
+	
+	let responseData;
+	
+	if (existingToken) {
+		// 如果存在token，直接返回（不检查过期）
+		responseData = {
+			"access_token": existingToken.access_token,
+			"refresh_token": existingToken.refresh_token,
+			"id_token": existingToken.id_token,
+			"sso_token": existingToken.sso_token,
+			"token_type": existingToken.token_type,
+			"expires_in": existingToken.expires_in,
+			"is_new_user": existingToken.is_new_user || false,
+			"mfa_factors": [],
+			"is_mobile_verified": existingToken.is_mobile_verified || false,
+			"account_restored": false
+		};
+		console.log('Using existing token for client:', client_id);
+	} else {
+		// 如果没有token，使用默认值并保存
+		responseData = {
+			"access_token": "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsInR5cCI6ImF0K2p3dCIsImtpZCI6IlRqb0FsLVdyZWN3Z3MtZVVvcm5xWWE5Y2x4dyJ9.eyJhdWQiOiJhOEVzRGxQYzNaQ1Znc1VwcHB1YyIsImV4cCI6MTc3MzYzMTQ2NywiaWF0IjoxNzczNTQ1MDY3LCJpc3MiOiJkcmVhbTExLmNvbSIsInN1YiI6IjMyMDE5OTg1OCIsImp0aSI6IjVqM3U4OVFNeFpNZG5tMXRsUXExVE5QenpGbnBGRGpmIiwidGlkIjoiMiIsInJmdF9pZCI6Ijc2NjYxMTYzODVGMzhEMUZGMjhFODBBNkQ1MTREM0Y0IiwiY2xpZW50X2lkIjoiYThFc0RsUGMzWkNWZ3NVcHBwdWMiLCJzY29wZSI6ImRyZWFtMTE6YWxsIiwiYW1yIjpbIm90cCJdLCJjb3VudHJ5Q29kZSI6IlVTIn0.QTfxN08TdhvuPEhZNVDyHmUDOpEN3N3XkgKl7tvRgx5A-3Wr4jQBdi9TW61RFYOPtJVt8dh-sxngrMPEDuHOcf-7-35gdD3NJmfc_Zim7umGjjm6U_aGF_2WSs10qp7e4dhAooeth2JEanpHAfUsf85SEThGTpSUBDKBaMg4Ly6V3T2D1hLb1EDxQNvLetcmBzJagOHu34SjTSEdWVbRTCWtwwvoklx1SyM7Ci34Z6H4Uioo5o1lisTtzyn6f74IkNoURQCiwYTZCS45h6-yKpBH4gsIsbG5gY0qvnYWKIfNBCcfSed9131iEn8zLEgvnWVlofrMLu7XPdEaHZFENQ",
+			"refresh_token": "7sVPEKChECZMIOiWGEOyxFW04P8Isz0F",
+			"id_token": "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6IlRqb0FsLVdyZWN3Z3MtZVVvcm5xWWE5Y2x4dyJ9.eyJhdWQiOiJhOEVzRGxQYzNaQ1Znc1VwcHB1YyIsImV4cCI6MTc3MzU0NTY2NywiaWF0IjoxNzM1NDUwNjcsImlzcyI6ImRyZWFtMTEuY29tIiwic3ViIjoiMzIwMTk5ODU4IiwidXNlcklkIjoiMzIwMTk5ODU4IiwiZW1haWxJZCI6InRvbnlhc2ltbXlzYjU3QGdtYWlsLmNvbSJ9.U1mxcD8Nqz57TToiTacj4sUWAE_JsugF2cI0tX50rnn7Cn89r9L3_ia5eOswXgC8DkZe1uw5jgFkBo3_hQTWd1YRS8AJ0BxbblI2lHzVt1JsqGBPqru_ADshj2vHeVYDW8CXMnRLU4Ndu7dfWVjPc26GruqMZN5WrmZ0g1GilJV9lZQujuGz-KurDDJ8q-CDgN9k-1ZvDeydYIWVBac3PSC2LGlvmy1viRLbPMw6cKDQ9poDyEBVJ0WYBe-RX4B5hBmCQmc8lotNO82_cY0ll97p0U7BBOuxRvJ3XvwFkLhYiogLPdMFw8oJB2UBEwfjd01k0_yJqP-3x3M5R-HoaQ",
+			"sso_token": "y0aFyuUPCli32C6",
+			"token_type": "Bearer",
+			"expires_in": 86400,
+			"is_new_user": false,
+			"mfa_factors": [],
+			"is_mobile_verified": false,
+			"account_restored": false
+		};
+		
+		// 保存新的默认tokens到文件
+		try {
+			tokenManager.saveToken(client_id, {
+				access_token: responseData.access_token,
+				refresh_token: responseData.refresh_token,
+				id_token: responseData.id_token,
+				sso_token: responseData.sso_token,
+				token_type: responseData.token_type,
+				expires_in: responseData.expires_in,
+				is_new_user: responseData.is_new_user,
+				is_mobile_verified: responseData.is_mobile_verified
+			});
+			console.log('Default tokens saved for client:', client_id);
+		} catch (fileError) {
+			console.error('Failed to save default tokens:', fileError);
+		}
+	}
+	
+	return NextResponse.json(responseData);
 
 	// return NextResponse.json({
 	// 	"access_token": "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsInR5cCI6ImF0K2p3dCIsImtpZCI6IlRqb0FsLVdyZWN3Z3MtZVVvcm5xWWE5Y2x4dyJ9.eyJhdWQiOiJhOEVzRGxQYzNaQ1Znc1VwcHB1YyIsImV4cCI6MTc3MzY3NzY5NiwiaWF0IjoxNzczNTkxMjk2LCJpc3MiOiJkcmVhbTExLmNvbSIsInN1YiI6IjMxNzE1MjMzMCIsImp0aSI6ImhtT2tmc0NCQVM5d2JkQUhiSDVva3lCOW84OVpqdVRRIiwidGlkIjoiMiIsInJmdF9pZCI6IjBGQkFEMUQ5RjFENzdGOTlFQjdFNzAzM0IzQ0RFREVGIiwiY2xpZW50X2lkIjoiYThFc0RsUGMzWkNWZ3NVcHBwdWMiLCJzY29wZSI6ImRyZWFtMTE6YWxsIiwiYW1yIjpbIm90cCJdLCJjb3VudHJ5Q29kZSI6IklOIn0.iZVontVwx0-WkQErCRaKQ9Eum31miMaGnsO1uO4KOiuKxnGxl2nx_guM8k4pL0R8R7WRhTebkXXlC-WUb039AGU0kq6U-Hafrx40Pss3bsJ76AKG8Ygi8SN38-D3g-oXanhGdnnH0NPuoVDCUfBL5M9UmkIzvH_VwPOoJFCBRtsNoNzmmIN5Ef-YhdNi8sb2fvuXnIkzekJ0KbhxtpCTA6xcrFn3uemmJPyhyzg6lDU4pvDYAGpDiJh0GTnk1RXtDj9qqkloX4jSrJ5HQkqIBUlTtEKykImGSJz9ob-oXbpkajc0kcQKrCltfclX0eOHPHy98lQTgpvOtg6ulY6nvQ",

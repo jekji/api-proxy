@@ -66,9 +66,9 @@ export async function POST(request: Request) {
 
 	// console.log(`Headers: ${JSON.stringify(requestHeaders)}`);
 	
-	if (process.env.API_URL) {
+	if (process.env.WWW_GRAPHAL_URL) {
 		// Use real API to fetch data
-		const apiURL = process.env.API_URL + "/graphql/query/react-native/my-teams-pre-rl-query";
+		const apiURL = process.env.WWW_GRAPHAL_URL + "/graphql/query/react-native/my-teams-pre-rl-query";
 		try {
 			const response = await fetch(apiURL, {
 				method: 'POST',
