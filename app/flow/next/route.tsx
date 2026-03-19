@@ -47,10 +47,10 @@ export async function POST(request: Request) {
 			const apiResponse = await fetch(apiURL, {
 				method: 'POST',
 				headers: requestHeaders,
-				body: JSON.stringify({
-					email
-				}),
+				body: JSON.stringify(body),
 			});
+
+			console.log("body", JSON.stringify(body), "apiResponse", JSON.stringify(apiResponse));
 
 			if (!apiResponse.ok) {
 				throw new Error(`API request failed: ${apiResponse.status}`);
