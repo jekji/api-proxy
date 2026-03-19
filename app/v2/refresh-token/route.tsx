@@ -87,15 +87,11 @@ export async function POST(request: Request) {
 		'cf-ipcountry',
 		'cf-ray',
 		'cf-visitor',
-		'x-app-version-name',
 		'x-forwarded-for',
 		'x-forwarded-host',
 		'x-forwarded-port',
 		'x-forwarded-proto',
-		'x-manufacturer',
 		'x-original-uri',
-		'x-os-type',
-		'x-os-version',
 		'x-real-ip',
 		'connection'
 	];

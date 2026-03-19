@@ -3,6 +3,9 @@ import { tokenManager } from '@/lib/token-manager';
 
 export async function POST(request: Request) {
 	const body = await request.json();
+
+	console.log("body", JSON.stringify(body), "guestLogin");
+
 	const { client_id } = body;
 	
 	// 优先从文件中读取现有token
