@@ -118,7 +118,7 @@ export async function POST(request: Request) {
 			
 			return NextResponse.json(data);
 		} catch (error) {
-			console.error(`API request failed. URL: ${apiURL}, error: `, error);
+			console.error(`API request failed. URL: ${apiURL}, refresh_token: ${refresh_token}, client_id: ${client_id}, error: `, error);
 			// Fall back to mock data if API fails
 		}
 	}
