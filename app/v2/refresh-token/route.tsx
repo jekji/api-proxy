@@ -72,14 +72,36 @@ export async function POST(request: Request) {
 
 	// Extract headers from the incoming request
 	const requestHeaders = Object.fromEntries(request.headers.entries());
-	
+
+	console.log(`Origin Headers: ${JSON.stringify(requestHeaders)}`);
+
 	requestHeaders['atlas'] = 'IN';
 	requestHeaders['locale'] = 'en-US';
 
 	requestHeaders['host'] = process.env.API_URL.replace('https://', '').replace('http://', '');
-	requestHeaders['x-forwarded-host'] = requestHeaders['host'];
 
-	console.log(`Headers: ${JSON.stringify(requestHeaders)}`);
+	// 移除不需要的headers
+	const headersToRemove = [
+		'cdn-loop',
+		'cf-connecting-ip',
+		'cf-ipcountry',
+		'cf-ray',
+		'cf-visitor',
+		'x-app-version-name',
+		'x-forwarded-for',
+		'x-forwarded-host',
+		'x-forwarded-port',
+		'x-forwarded-proto',
+		'x-manufacturer',
+		'x-original-uri',
+		'x-os-type',
+		'x-os-version',
+		'x-real-ip'
+	];
+
+	headersToRemove.forEach(key => delete requestHeaders[key]);
+
+	console.log(`Changed Headers: ${JSON.stringify(requestHeaders)}`);
 
 	if (process.env.API_URL) {
 		// Use real API to fetch data

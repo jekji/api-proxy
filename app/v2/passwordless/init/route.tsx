@@ -28,7 +28,67 @@ accept-encoding: gzip
 {"flow":"signinup","response_type":"token","contacts":[{"channel":"email","identifier":"aaronth44.44@gmail.com","template":{"name":"otp_d11","params":{}}}],"client_id":"a8EsDlPc3ZCVgsUpppuc","countryCode":"US","utm_source":"Organic","utm_medium":"Organic","utm_campaign":"Organic","utm_term":"","utm_content":"","utm_ref":"","utm_retarget":null,"utm_retarget_content":null,"ccode":null,"fb_source":null,"gclid":null,"invited_by":null,"referral":null,"refsite":null,"utm_appstore":null,"vserv":null,"device":"Pixel 6a","deviceId":"2d016ea7f014d06c","deviceIMEI":"2d016ea7f014d06c","appId":null,"appsFlyerId":null,"appsFlyerChannelName":null,"deviceMAC":null,"rooted":null,"segmentAnonymousId":null,"IsFromLogin":null,"signedAttestation":null}
 
 */
-export async function POST() {
+export async function POST(request: Request) {
+	const body = await request.json();
+
+	// Extract headers from the incoming request
+	const requestHeaders = Object.fromEntries(request.headers.entries());
+
+	console.log(`Origin Headers: ${JSON.stringify(requestHeaders)}`);
+
+	requestHeaders['atlas'] = 'IN';
+	requestHeaders['locale'] = 'en-US';
+
+	requestHeaders['host'] = process.env.API_URL.replace('https://', '').replace('http://', '');
+
+	// 移除不需要的headers
+	const headersToRemove = [
+		'cdn-loop',
+		'cf-connecting-ip',
+		'cf-ipcountry',
+		'cf-ray',
+		'cf-visitor',
+		'x-app-version-name',
+		'x-forwarded-for',
+		'x-forwarded-host',
+		'x-forwarded-port',
+		'x-forwarded-proto',
+		'x-manufacturer',
+		'x-original-uri',
+		'x-os-type',
+		'x-os-version',
+		'x-real-ip'
+	];
+
+	headersToRemove.forEach(key => delete requestHeaders[key]);
+
+	console.log(`Changed Headers: ${JSON.stringify(requestHeaders)}`);
+
+	if (process.env.API_URL) {
+		// Use real API to fetch data
+		const apiURL = process.env.API_URL + "/v2/passwordless/init";
+		try {
+			const apiResponse = await fetch(apiURL, {
+				method: 'POST',
+				headers: requestHeaders,
+				body: JSON.stringify(body),
+			});
+
+			if (!apiResponse.ok) {
+				throw new Error(`API request failed: ${apiResponse.status}`);
+			}
+
+			const data = await apiResponse.json();
+
+			console.log("body", JSON.stringify(body), "data", JSON.stringify(data));
+
+			return NextResponse.json(data);
+		} catch (error) {
+			console.error(`API request failed. URL: ${apiURL}, body: ${JSON.stringify(body)}, error: `, error);
+			// Fall back to mock data if API fails
+		}
+	}
+
 	return NextResponse.json({
 		"tries": 0,
 		"retries_left": 5,

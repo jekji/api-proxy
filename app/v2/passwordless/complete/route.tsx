@@ -30,7 +30,84 @@ accept-encoding: gzip
 */
 export async function POST(request: Request) {
 	const body = await request.json();
+
 	const { client_id, state, otp } = body;
+
+	// Extract headers from the incoming request
+	const requestHeaders = Object.fromEntries(request.headers.entries());
+
+	console.log(`Origin Headers: ${JSON.stringify(requestHeaders)}`);
+
+	requestHeaders['atlas'] = 'IN';
+	requestHeaders['locale'] = 'en-US';
+
+	requestHeaders['host'] = process.env.API_URL.replace('https://', '').replace('http://', '');
+
+	// 移除不需要的headers
+	const headersToRemove = [
+		'cdn-loop',
+		'cf-connecting-ip',
+		'cf-ipcountry',
+		'cf-ray',
+		'cf-visitor',
+		'x-app-version-name',
+		'x-forwarded-for',
+		'x-forwarded-host',
+		'x-forwarded-port',
+		'x-forwarded-proto',
+		'x-manufacturer',
+		'x-original-uri',
+		'x-os-type',
+		'x-os-version',
+		'x-real-ip'
+	];
+
+	headersToRemove.forEach(key => delete requestHeaders[key]);
+
+	console.log(`Changed Headers: ${JSON.stringify(requestHeaders)}`);
+
+	if (process.env.API_URL) {
+		// Use real API to fetch data
+		const apiURL = process.env.API_URL + "/v2/passwordless/complete";
+		try {
+			const apiResponse = await fetch(apiURL, {
+				method: 'POST',
+				headers: requestHeaders,
+				body: JSON.stringify(body),
+			});
+
+			if (!apiResponse.ok) {
+				throw new Error(`API request failed: ${apiResponse.status}`);
+			}
+
+			const data = await apiResponse.json();
+
+			console.log("body", JSON.stringify(body), "data", JSON.stringify(data));
+
+			if (data.error) {
+				return NextResponse.json(data);
+			}
+
+			tokenManager.saveToken(client_id, {
+				access_token: data.access_token,
+				refresh_token: data.refresh_token,
+				id_token: data.id_token,
+				sso_token: data.sso_token,
+				token_type: data.token_type,
+				expires_in: data.expires_in,
+				is_new_user: data.is_new_user,
+				is_mobile_verified: data.is_mobile_verified,
+				mfa_factors: data.mfa_factors,
+				account_restored: data.account_restored,
+			});
+			console.log('tokens saved for client:', client_id);
+
+			return NextResponse.json(data);
+		} catch (error) {
+			console.error(`API request failed. URL: ${apiURL}, body: ${JSON.stringify(body)}, error: `, error);
+			// Fall back to mock data if API fails
+		}
+	}
 	
 	// 优先从文件中读取现有token
 	const existingToken = tokenManager.getToken(client_id);

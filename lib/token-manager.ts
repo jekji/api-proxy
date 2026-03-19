@@ -12,6 +12,8 @@ export interface TokenData {
   expires_at: string;
   is_new_user?: boolean;
   is_mobile_verified?: boolean;
+  mfa_factors?: any[];
+  account_restored?: boolean;
 }
 
 export interface TokenStorage {
