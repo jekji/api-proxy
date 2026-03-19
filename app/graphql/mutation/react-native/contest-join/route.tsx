@@ -56,9 +56,9 @@ export async function POST(request: Request) {
 	const requestHeaders = Object.fromEntries(request.headers.entries());
 	requestHeaders['atlas'] = 'IN';
 	requestHeaders['locale'] = 'en-US';
-	requestHeaders['host'] = process.env.API_URL.replace('https://', '').replace('http://', '');
+	requestHeaders['host'] = process.env.WWW_GRAPHAL_URL.replace('https://', '').replace('http://', '');
 
-	// 移除不需要的headers
+	// Remove unnecessary headers
 	const headersToRemove = [
 		'cdn-loop',
 		'cf-connecting-ip',
@@ -75,6 +75,7 @@ export async function POST(request: Request) {
 	];
 
 	headersToRemove.forEach(key => delete requestHeaders[key]);
+	console.log(`Changed Headers: ${JSON.stringify(requestHeaders)}`);
 	
 	if (process.env.WWW_GRAPHAL_URL) {
 		// Use real API to fetch data
