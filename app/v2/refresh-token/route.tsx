@@ -96,7 +96,8 @@ export async function POST(request: Request) {
 		'x-original-uri',
 		'x-os-type',
 		'x-os-version',
-		'x-real-ip'
+		'x-real-ip',
+		'connection'
 	];
 
 	headersToRemove.forEach(key => delete requestHeaders[key]);
