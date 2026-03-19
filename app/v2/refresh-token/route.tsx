@@ -29,6 +29,42 @@ cookie: RT=HnwZbqZGEOGRjPOhPtgpE0R8zkKWTE9u; SSOT=82JXPV48sQkzuaz
 
 {"client_id":"a8EsDlPc3ZCVgsUpppuc","refresh_token":"HnwZbqZGEOGRjPOhPtgpE0R8zkKWTE9u"}
 
+Headers: 
+{
+    "a1": "4396c0eb12131956bf81545d16e9765193f8f412da01f3ae375586b35cf6915f", 
+    "accept": "application/json", 
+    "accept-encoding": "gzip, br", 
+    "cdn-loop": "cloudflare; loops=1", 
+    "cf-connecting-ip": "2406:da18:f81:6a00:7385:aee:175:52de", 
+    "cf-ipcountry": "SG", 
+    "cf-ray": "9de9ecb3fc56f93a-SIN", 
+    "cf-visitor": "{\"scheme\":\"https\"}", 
+    "connection": "upgrade", 
+    "content-length": "87", 
+    "content-type": "application/json", 
+    "device": "androidplaystore", 
+    "deviceid": "88d65ffab6a82902", 
+    "devicetype": "ANDROID", 
+    "ek1": "9ff4e1f14b1fa7f13f27b8a8e8acdfcb366d435c8146763bfe9dda45a83e6ef2", 
+    "ek2": "9ff4e1f14b1fa7f13f27b8a8e8acdfcb366d435c8146763bfe9dda45a83e6ef2", 
+    "host": "api-dream11.dfkjdsfjd.shop", 
+    "locale": "en-US", 
+    "siteid": "1", 
+    "user-agent": "Dream11/7.5.0 (Linux; Android 36; 23117RK66C) Build/10045", 
+    "version": "10045", 
+    "x-app-version-name": "750", 
+    "x-forwarded-for": "2406:da18:f81:6a00:7385:aee:175:52de, 172.68.164.114", 
+    "x-forwarded-host": "api-dream11.dfkjdsfjd.shop", 
+    "x-forwarded-port": "3030", 
+    "x-forwarded-proto": "http", 
+    "x-manufacturer": "Redmi", 
+    "x-original-uri": "/v2/refresh-token", 
+    "x-os-type": "android", 
+    "x-os-version": "16", 
+    "x-real-ip": "172.68.164.114", 
+    "atlas": "IN"
+}
+
 */
 export async function POST(request: Request) {
 	const body = await request.json();
@@ -40,9 +76,12 @@ export async function POST(request: Request) {
 	requestHeaders['atlas'] = 'IN';
 	requestHeaders['locale'] = 'en-US';
 
+	requestHeaders['host'] = process.env.API_URL.replace('https://', '').replace('http://', '');
+	requestHeaders['x-forwarded-host'] = requestHeaders['host'];
+
 	console.log(`Headers: ${JSON.stringify(requestHeaders)}`);
 
-	if (process.env.WWW_GRAPHAL_URL) {
+	if (process.env.API_URL) {
 		// Use real API to fetch data
 		const apiURL = process.env.API_URL + "/v2/refresh-token";
 		try {
