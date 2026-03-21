@@ -103,6 +103,9 @@ export async function POST(request: Request) {
 		'x-os-type',
 		'x-os-version',
 		'x-real-ip',
+		"accept-encoding",
+		"accept",
+		"content-length",
 		'connection'
 	];
 
