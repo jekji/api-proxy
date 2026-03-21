@@ -1,3 +1,4 @@
+import { extractAndModifyHeaders } from '@/lib/changeHeader';
 import { NextResponse } from 'next/server';
 
 /**
@@ -28,7 +29,40 @@ accept-encoding: gzip
 
 {"query":"\n    query StreamSectionQuery($status: StreamStatus!, $creatorId: Int, $roundId: Int, $includeStreamerInfo: Boolean!) {\n  LiveStreams(status: $status, creatorId: $creatorId, roundId: $roundId) {\n    streamInfo {\n      liveStreamInfo {\n        id\n        status\n        title\n        startTime\n        thumbnailUrl\n        viewCount\n        roundId\n        tourId\n        matchStatus\n        squads {\n          id\n          shortName\n        }\n      }\n      streamerInfo @include(if: $includeStreamerInfo) {\n        id\n        userName\n        imageUrl\n        isVerified\n      }\n    }\n  }\n}\n    ","variables":{"status":"LIVE","creatorId":null,"roundId":112970,"includeStreamerInfo":true}}
 */
-export async function POST() {
+export async function POST(request: Request) {
+	const body = await request.json();
+	const { query, variables } = body;
+
+	const requestHeaders = extractAndModifyHeaders(request, process.env.WWW_GRAPHAL_URL || '');
+	
+	if (process.env.WWW_GRAPHAL_URL) {
+		// Use real API to fetch data
+		try {
+			const apiURL = process.env.WWW_GRAPHAL_URL + "/graphql/query/react-native/stream-section-query";
+			const response = await fetch(apiURL, {
+				method: 'POST',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query,
+					variables
+				}),
+			});
+			
+			if (!response.ok) {
+				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(requestHeaders)}`);
+			}
+			
+			const data = await response.json();
+
+			console.log("stream-section-query", JSON.stringify(data));
+			
+			return NextResponse.json(data);
+		} catch (error) {
+			console.error('API request error:', error);
+			// Fall back to mock data if API fails
+		}
+	}
+
 	return NextResponse.json({
 		"data": {
 			"LiveStreams": {

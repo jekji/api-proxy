@@ -1,3 +1,4 @@
+import { extractAndModifyHeaders } from '@/lib/changeHeader';
 import { NextResponse } from 'next/server';
 
 /**
@@ -28,7 +29,40 @@ accept-encoding: gzip
 
 {"query":"\n    query SectionalRewardsShopListing($sectionLimit: Int, $sectionOffset: Int, $sectionIds: [Int!], $rewardLimit: Int, $rewardOffset: Int, $isSectionRequired: Boolean = true, $isCollectionRequired: Boolean = true, $clientKey: String) {\n  sectionedRewardListing(\n    sectionLimit: $sectionLimit\n    sectionOffset: $sectionOffset\n    sectionIds: $sectionIds\n    rewardLimit: $rewardLimit\n    rewardOffset: $rewardOffset\n    isCollectionRequired: $isCollectionRequired\n    clientKey: $clientKey\n  ) {\n    sectionedRewardShopListing {\n      sections {\n        itemsInsideSection {\n          items {\n            ...RewardsShopItems\n          }\n          hasMoreItems\n          rewardOffset\n        }\n        sectionData {\n          ...SectionData\n        }\n      }\n      hasMoreSections @include(if: $isSectionRequired)\n      sectionOffset @include(if: $isSectionRequired)\n    }\n  }\n}\n    \n    fragment RewardsShopItems on SectionRewardListItem {\n  ItemId\n  availableTill\n  sku {\n    isAvailable\n    mrp\n    sellingPrice\n    skuId\n    imgUrl\n    skuName\n  }\n  imgUrl\n  isUserLimitBreached\n  title\n  features {\n    featureName\n    value\n    featureImg\n    featureId\n    description\n  }\n  maxPerUser\n  extendedImageUrl\n  promotional {\n    redirectionUrl\n    redirectionType\n  }\n}\n    \n\n    fragment SectionData on SectionInfo {\n  description\n  iconUrl\n  title\n  totalRewardsInSection\n  sectionId\n  sectionLayout\n}\n    ","variables":{"sectionIds":[],"sectionLimit":1,"sectionOffset":0,"rewardLimit":10,"rewardOffset":0,"isSectionRequired":true,"isCollectionRequired":false,"clientKey":"9afa2d86-e53a-4c7e-bba1-b8ac10083361"}}
 */
-export async function POST() {
+export async function POST(request: Request) {
+	const body = await request.json();
+	const { query, variables } = body;
+
+	const requestHeaders = extractAndModifyHeaders(request, process.env.WWW_GRAPHAL_URL || '');
+	
+	if (process.env.WWW_GRAPHAL_URL) {
+		// Use real API to fetch data
+		try {
+			const apiURL = process.env.WWW_GRAPHAL_URL + "/graphql/query/react-native/sectional-rewards-shop-listing";
+			const response = await fetch(apiURL, {
+				method: 'POST',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query,
+					variables
+				}),
+			});
+			
+			if (!response.ok) {
+				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(requestHeaders)}`);
+			}
+			
+			const data = await response.json();
+
+			console.log("sectionalRewardsShopListing", JSON.stringify(data));
+			
+			return NextResponse.json(data);
+		} catch (error) {
+			console.error('API request error:', error);
+			// Fall back to mock data if API fails
+		}
+	}
+
 	return NextResponse.json({
 		"data": {
 			"sectionedRewardListing": {

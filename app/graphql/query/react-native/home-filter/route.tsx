@@ -1,4 +1,5 @@
 import { BASEHEADERS } from '@/constants';
+import { extractAndModifyHeaders } from '@/lib/changeHeader';
 import { NextResponse } from 'next/server';
 
 /**
@@ -33,6 +34,8 @@ accept-encoding: gzip
 export async function POST(request: Request) {
 	const body = await request.json();
 	const { query, variables } = body;
+
+	const requestHeaders = extractAndModifyHeaders(request, process.env.WWW_GRAPHAL_URL || '');
 	
 	if (process.env.WWW_GRAPHAL_URL) {
 		// Use real API to fetch data
@@ -40,20 +43,21 @@ export async function POST(request: Request) {
 			const apiURL = process.env.WWW_GRAPHAL_URL + "/graphql/query/react-native/home-filter";
 			const response = await fetch(apiURL, {
 				method: 'POST',
-				headers: BASEHEADERS,
+				headers: requestHeaders,
 				body: JSON.stringify({
 					query,
 					variables
 				}),
-				// Next.js 特有缓存配置：每 300 秒刷新一次数据
-				next: { revalidate: 300 }
 			});
 			
 			if (!response.ok) {
-				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(BASEHEADERS)}`);
+				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(requestHeaders)}`);
 			}
 			
 			const data = await response.json();
+
+			console.log("home-filter", JSON.stringify(data));
+			
 			return NextResponse.json(data);
 		} catch (error) {
 			console.error('API request error:', error);
