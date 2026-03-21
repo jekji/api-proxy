@@ -68,8 +68,8 @@ export class TokenManager {
   saveToken(deviceid: string, tokenData: Partial<TokenData>): void {
     const tokens = this.readTokens();
     
+    // 如果key不存在则新增，如果key存在则完全覆盖
     tokens[deviceid] = {
-      ...tokens[deviceid],
       ...tokenData,
       updated_at: new Date().toISOString(),
       expires_in: tokenData.expires_in ? tokenData.expires_in : 86400,
