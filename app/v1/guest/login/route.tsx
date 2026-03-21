@@ -55,7 +55,7 @@ export async function POST(request: Request) {
 	// 优先从文件中读取现有token
 	const existingToken = tokenManager.getToken(deviceid);
 	
-	if (existingToken) {
+	if (existingToken && existingToken.access_token) {
 		// 如果存在token，直接返回
 		return NextResponse.json({
 			"access_token": existingToken.access_token,
