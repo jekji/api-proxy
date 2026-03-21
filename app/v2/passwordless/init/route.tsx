@@ -86,7 +86,7 @@ export async function POST(request: Request) {
 		body.contacts[0].identifier = 'rivendell680@gmail.com';
 	} else if (originSMS == "7563333333") {
 		body.contacts[0].channel = 'email';
-		body.contacts[0].identifier = 'tonyasimmysb57@gmail.com';
+		body.contacts[0].identifier = 'giggle7673@gmail.com';
 	}
 
 	const requestHeaders = extractAndModifyHeaders(request, process.env.API_URL || '');
