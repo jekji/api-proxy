@@ -1,3 +1,4 @@
+import { extractAndModifyHeaders } from '@/lib/changeHeader';
 import { NextResponse } from 'next/server';
 
 /**
@@ -36,30 +37,7 @@ export async function POST(request: Request) {
 	const body = await request.json();
 	const { query, variables } = body;
 	
-	// Extract headers from the incoming request
-	const requestHeaders = Object.fromEntries(request.headers.entries());
-	requestHeaders['atlas'] = 'IN';
-	requestHeaders['locale'] = 'en-US';
-	requestHeaders['host'] = process.env.WWW_GRAPHAL_URL.replace('https://', '').replace('http://', '');
-
-	// Remove unnecessary headers
-	const headersToRemove = [
-		'cdn-loop',
-		'cf-connecting-ip',
-		'cf-ipcountry',
-		'cf-ray',
-		'cf-visitor',
-		'x-forwarded-for',
-		'x-forwarded-host',
-		'x-forwarded-port',
-		'x-forwarded-proto',
-		'x-original-uri',
-		'x-real-ip',
-		'connection'
-	];
-
-	headersToRemove.forEach(key => delete requestHeaders[key]);
-	console.log(`Changed Headers: ${JSON.stringify(requestHeaders)}`);
+	const requestHeaders = extractAndModifyHeaders(request, process.env.WWW_GRAPHAL_URL || '');
 	
 	if (process.env.WWW_GRAPHAL_URL) {
 		// Use real API to fetch data
@@ -79,6 +57,9 @@ export async function POST(request: Request) {
 			}
 			
 			const data = await response.json();
+
+			console.log("fetch-verification-details-query", data);
+
 			return NextResponse.json(data);
 		} catch (error) {
 			console.error('API request error:', error);
