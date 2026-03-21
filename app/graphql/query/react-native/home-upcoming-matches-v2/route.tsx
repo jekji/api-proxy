@@ -36,6 +36,36 @@ cookie: __refreshToken=HnwZbqZGEOGRjPOhPtgpE0R8zkKWTE9u; dh_user_id=4c1e2720-209
 export async function POST(request: Request) {
 	const body = await request.json();
 	const { query, variables } = body;
+
+	// Extract headers from the incoming request
+	const requestHeaders = Object.fromEntries(request.headers.entries());
+
+	console.log(`Origin Headers: ${JSON.stringify(requestHeaders)}`);
+
+	requestHeaders['atlas'] = 'IN';
+	requestHeaders['locale'] = 'en-US';
+
+	requestHeaders['host'] = process.env.API_URL.replace('https://', '').replace('http://', '');
+
+	// 移除不需要的headers
+	const headersToRemove = [
+		'cdn-loop',
+		'cf-connecting-ip',
+		'cf-ipcountry',
+		'cf-ray',
+		'cf-visitor',
+		'x-forwarded-for',
+		'x-forwarded-host',
+		'x-forwarded-port',
+		'x-forwarded-proto',
+		'x-original-uri',
+		'x-real-ip',
+		'connection'
+	];
+
+	headersToRemove.forEach(key => delete requestHeaders[key]);
+
+	console.log(`Changed Headers: ${JSON.stringify(requestHeaders)}`);
 	
 	if (process.env.WWW_GRAPHAL_URL) {
 		// Use real API to fetch data
@@ -43,13 +73,11 @@ export async function POST(request: Request) {
 		try {
 			const response = await fetch(apiURL, {
 				method: 'POST',
-				headers: BASEHEADERS,
+				headers: requestHeaders,
 				body: JSON.stringify({
 					query,
 					variables
-				}),
-				// Next.js 特有缓存配置：每 300 秒刷新一次数据
-				next: { revalidate: 300 }
+				})
 			});
 			
 			if (!response.ok) {
@@ -57,6 +85,9 @@ export async function POST(request: Request) {
 			}
 			
 			const data = await response.json();
+
+			console.log("upcomingMatchesV2", JSON.stringify(data));
+
 			return NextResponse.json(data);
 		} catch (error) {
 			console.error(`API request failed. URL: ${apiURL}, error: `, error);
