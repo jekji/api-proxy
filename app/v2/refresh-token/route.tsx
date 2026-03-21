@@ -71,7 +71,7 @@ export async function POST(request: Request) {
 	const body = await request.json();
 	const { client_id, refresh_token } = body;
 
-const requestHeaders = extractAndModifyHeaders(request, process.env.API_URL || '');
+	const requestHeaders = extractAndModifyHeaders(request, process.env.API_URL || '');
 
 	if (process.env.API_URL) {
 		// Use real API to fetch data

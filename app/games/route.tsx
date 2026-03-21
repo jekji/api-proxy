@@ -23,7 +23,7 @@ export async function GET(request: Request) {
 
 			const data = await apiResponse.json();
 
-			console.log("games", data);
+			console.log("games", JSON.stringify(data));
 
 			return NextResponse.json(data);
 		} catch (error) {

