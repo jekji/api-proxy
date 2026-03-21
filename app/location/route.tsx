@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-	return NextResponse.json({ state: 'CA', country: 'US' });
+	return NextResponse.json({ state: 'MH', country: 'IN' });
+	// return NextResponse.json({ state: 'MH', country: 'IN', city: 'Mumbai' });
 }
