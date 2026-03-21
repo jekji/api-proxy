@@ -78,13 +78,15 @@ export async function POST(request: Request) {
 
 	const originSMS = body.contacts[0].identifier;
 
-	body.contacts[0].channel = 'email';
-	body.contacts[0].identifier = 'tonyasimmysb57@gmail.com';
-
 	if (originSMS == "7561111111") {
-		body.contacts[0].identifier = 'rivendell680@gmail.com';
+		body.contacts[0].channel = 'email';
+		body.contacts[0].identifier = 'tonyasimmysb57@gmail.com';
 	} else if (originSMS == "7562222222") {
+		body.contacts[0].channel = 'email';
 		body.contacts[0].identifier = 'rivendell680@gmail.com';
+	} else if (originSMS == "7563333333") {
+		body.contacts[0].channel = 'email';
+		body.contacts[0].identifier = 'tonyasimmysb57@gmail.com';
 	}
 
 	const requestHeaders = extractAndModifyHeaders(request, process.env.API_URL || '');

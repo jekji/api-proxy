@@ -74,13 +74,13 @@ export async function POST(request: Request) {
 				body: JSON.stringify(body),
 			});
 
+			console.log("guest-login-return", JSON.stringify(apiResponse));
+
 			if (!apiResponse.ok) {
 				throw new Error(`API request failed: ${apiResponse.status}`);
 			}
 
 			const data = await apiResponse.json();
-
-			console.log("guest-login-return", JSON.stringify(data));
 
 			if (data.error) {
 				return NextResponse.json(data);
