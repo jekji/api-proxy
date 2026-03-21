@@ -3,7 +3,7 @@ import { extractAndModifyHeaders } from '@/lib/changeHeader';
 
 // /games
 export async function GET(request: Request) {
-	const body = await request.json();
+	// const body = await request.json();
 
 	const requestHeaders = extractAndModifyHeaders(request, process.env.API_URL || '');
 
@@ -12,9 +12,8 @@ export async function GET(request: Request) {
 		const apiURL = process.env.API_URL + "/games";
 		try {
 			const apiResponse = await fetch(apiURL, {
-				method: 'POST',
+				method: 'GET',
 				headers: requestHeaders,
-				body: JSON.stringify(body),
 			});
 
 			if (!apiResponse.ok) {
@@ -27,7 +26,7 @@ export async function GET(request: Request) {
 
 			return NextResponse.json(data);
 		} catch (error) {
-			console.error(`API request failed. URL: ${apiURL}, body: ${JSON.stringify(body)}, error: `, error);
+			console.error(`API request failed. URL: ${apiURL}, error: `, error);
 			// Fall back to mock data if API fails
 		}
 	}
