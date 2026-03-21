@@ -48,8 +48,6 @@ export async function POST(request: Request) {
 					query,
 					variables
 				}),
-				// Next.js 特有缓存配置：每 60 秒刷新一次数据
-				next: { revalidate: 60 }
 			});
 			
 			if (!response.ok) {
@@ -58,7 +56,7 @@ export async function POST(request: Request) {
 			
 			const data = await response.json();
 
-			console.log("contestsJoined", JSON.stringify(data));
+			console.log("requestBody", JSON.stringify(body), "contestsJoined", JSON.stringify(data));
 
 			return NextResponse.json(data);
 		} catch (error) {
