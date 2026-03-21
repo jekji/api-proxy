@@ -28,6 +28,7 @@ content-type: application/json
 content-length: 435
 accept-encoding: gzip
 
+{"query":"\n    query FantasyRoundStatus($site: String!, $matchId: Int!) {\n  match(site: $site, id: $matchId) {\n    status\n  }\n}\n    ","variables":{"site":"cricket","matchId":112925}}
 
 */
 export async function POST(request: Request) {
@@ -64,5 +65,5 @@ export async function POST(request: Request) {
 		}
 	}
 
-	return NextResponse.json({});
+	return NextResponse.json({"data":{"match":{"status":"IN_PROGRESS"}}});
 }

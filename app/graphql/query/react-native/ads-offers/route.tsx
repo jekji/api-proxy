@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 /**
 :method: POST
-:path: /graphql/query/react-native/match-status-query
+:path: /graphql/query/react-native/ads-offers
 :authority: www.dream11.com
 :scheme: https
 accept: application/json
@@ -27,7 +27,6 @@ content-type: application/json
 content-length: 435
 accept-encoding: gzip
 
-{"query":"\n    query MatchStatusQuery($site: String!, $matchId: Int!) {\n  match(site: $site, id: $matchId) {\n    name\n    status\n  }\n}\n    ","variables":{"site":"cricket","matchId":112925}}
 
 */
 export async function POST(request: Request) {
@@ -39,7 +38,7 @@ export async function POST(request: Request) {
 	if (process.env.WWW_GRAPHAL_URL) {
 		// Use real API to fetch data
 		try {
-			const apiURL = process.env.WWW_GRAPHAL_URL + "/graphql/query/react-native/match-status-query";
+			const apiURL = process.env.WWW_GRAPHAL_URL + "/graphql/query/react-native/ads-offers";
 			const response = await fetch(apiURL, {
 				method: 'POST',
 				headers: requestHeaders,
@@ -55,7 +54,7 @@ export async function POST(request: Request) {
 			
 			const data = await response.json();
 
-			console.log("requestBody", JSON.stringify(body), "match-status-query", JSON.stringify(data));
+			console.log("requestBody", JSON.stringify(body), "ads-offers", JSON.stringify(data));
 
 			return NextResponse.json(data);
 		} catch (error) {
@@ -64,12 +63,5 @@ export async function POST(request: Request) {
 		}
 	}
 
-	return NextResponse.json({
-		"data": {
-			"match": {
-				"name": "WAR vs KZL", 
-				"status": "IN_PROGRESS"
-			}
-		}
-	});
+	return NextResponse.json({});
 }
