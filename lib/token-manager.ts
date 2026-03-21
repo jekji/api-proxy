@@ -66,17 +66,18 @@ export class TokenManager {
 
   // 保存或更新特定device的token
   saveToken(deviceid: string, tokenData: Partial<TokenData>): void {
-    const tokens = this.readTokens();
+    const tokens = this.readTokens();  // 读取所有现有的 tokens
     
     // 如果key不存在则新增，如果key存在则完全覆盖
     tokens[deviceid] = {
-      ...tokenData,
+      ...tokens[deviceid],  // 保留原有数据
+      ...tokenData,         // 用新数据覆盖同名字段
       updated_at: new Date().toISOString(),
       expires_in: tokenData.expires_in ? tokenData.expires_in : 86400,
       expires_at: tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000).toISOString() : new Date(Date.now() + 86400 * 1000).toISOString()
     } as TokenData;
     
-    this.saveTokens(tokens);
+    this.saveTokens(tokens);            // 保存整个 tokens 对象
   }
 
   // 检查token是否过期
