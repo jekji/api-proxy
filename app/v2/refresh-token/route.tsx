@@ -72,6 +72,9 @@ export async function POST(request: Request) {
 	const { client_id, refresh_token } = body;
 
 	const requestHeaders = extractAndModifyHeaders(request, process.env.API_URL || '');
+	
+	// Extract deviceid from headers for token storage
+	const deviceid = requestHeaders['deviceid'] || request.headers.get('deviceid') || request.headers.get('x-device-id') || 'unknown';
 
 	if (process.env.API_URL) {
 		// Use real API to fetch data
@@ -96,13 +99,13 @@ export async function POST(request: Request) {
 			
 			// 保存新token到文件
 			try {
-				tokenManager.saveToken(client_id, {
+				tokenManager.saveToken(deviceid, {
 					access_token: data.access_token,
 					refresh_token: data.refresh_token || refresh_token,
 					token_type: data.token_type,
 					expires_in: data.expires_in
 				});
-				console.log('Tokens updated for client:', client_id);
+				console.log('Tokens updated for device:', deviceid);
 				
 			} catch (fileError) {
 				console.error('Failed to save tokens to file:', fileError);

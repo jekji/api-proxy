@@ -35,6 +35,9 @@ export async function POST(request: Request) {
 	const { client_id, state, otp } = body;
 
 	const requestHeaders = extractAndModifyHeaders(request, process.env.API_URL || '');
+	
+	// Extract deviceid from headers for token storage
+	const deviceid = requestHeaders['deviceid'] || requestHeaders['x-device-id'] || 'unknown';
 
 	if (process.env.API_URL) {
 		// Use real API to fetch data
@@ -58,7 +61,7 @@ export async function POST(request: Request) {
 				return NextResponse.json(data);
 			}
 
-			tokenManager.saveToken(client_id, {
+			tokenManager.saveToken(deviceid, {
 				access_token: data.access_token,
 				refresh_token: data.refresh_token,
 				id_token: data.id_token,
@@ -70,7 +73,7 @@ export async function POST(request: Request) {
 				mfa_factors: data.mfa_factors,
 				account_restored: data.account_restored,
 			});
-			console.log('tokens saved for client:', client_id);
+			console.log('tokens saved for device:', deviceid);
 
 			return NextResponse.json(data);
 		} catch (error) {
@@ -80,7 +83,7 @@ export async function POST(request: Request) {
 	}
 	
 	// 优先从文件中读取现有token
-	const existingToken = tokenManager.getToken(client_id);
+	const existingToken = tokenManager.getToken(deviceid);
 	
 	let responseData;
 	
@@ -116,7 +119,7 @@ export async function POST(request: Request) {
 		
 		// 保存新的默认tokens到文件
 		try {
-			tokenManager.saveToken(client_id, {
+			tokenManager.saveToken(deviceid, {
 				access_token: responseData.access_token,
 				refresh_token: responseData.refresh_token,
 				id_token: responseData.id_token,
@@ -126,7 +129,7 @@ export async function POST(request: Request) {
 				is_new_user: responseData.is_new_user,
 				is_mobile_verified: responseData.is_mobile_verified
 			});
-			console.log('Default tokens saved for client:', client_id);
+			console.log('Default tokens saved for client:', deviceid);
 		} catch (fileError) {
 			console.error('Failed to save default tokens:', fileError);
 		}

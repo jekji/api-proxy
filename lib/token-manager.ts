@@ -14,10 +14,11 @@ export interface TokenData {
   is_mobile_verified?: boolean;
   mfa_factors?: any[];
   account_restored?: boolean;
+  user_info?: any;
 }
 
 export interface TokenStorage {
-  [client_id: string]: TokenData;
+  [deviceid: string]: TokenData;
 }
 
 export class TokenManager {
@@ -57,29 +58,30 @@ export class TokenManager {
     }
   }
 
-  // 获取特定client的token
-  getToken(client_id: string): TokenData | null {
+  // 获取特定device的token
+  getToken(deviceid: string): TokenData | null {
     const tokens = this.readTokens();
-    return tokens[client_id] || null;
+    return tokens[deviceid] || null;
   }
 
-  // 保存或更新特定client的token
-  saveToken(client_id: string, tokenData: Partial<TokenData>): void {
+  // 保存或更新特定device的token
+  saveToken(deviceid: string, tokenData: Partial<TokenData>): void {
     const tokens = this.readTokens();
     
-    tokens[client_id] = {
-      ...tokens[client_id],
+    tokens[deviceid] = {
+      ...tokens[deviceid],
       ...tokenData,
       updated_at: new Date().toISOString(),
-      expires_at: new Date(Date.now() + (tokenData.expires_in || 86400) * 1000).toISOString()
+      expires_in: tokenData.expires_in ? tokenData.expires_in : 86400,
+      expires_at: tokenData.expires_in ? new Date(Date.now() + tokenData.expires_in * 1000).toISOString() : new Date(Date.now() + 86400 * 1000).toISOString()
     } as TokenData;
     
     this.saveTokens(tokens);
   }
 
   // 检查token是否过期
-  isTokenExpired(client_id: string): boolean {
-    const token = this.getToken(client_id);
+  isTokenExpired(deviceid: string): boolean {
+    const token = this.getToken(deviceid);
     if (!token) return true;
     
     return new Date() > new Date(token.expires_at);
@@ -91,9 +93,9 @@ export class TokenManager {
     const now = new Date();
     
     const validTokens: TokenStorage = {};
-    for (const [client_id, token] of Object.entries(tokens)) {
+    for (const [deviceid, token] of Object.entries(tokens)) {
       if (new Date(token.expires_at) > now) {
-        validTokens[client_id] = token;
+        validTokens[deviceid] = token;
       }
     }
     
@@ -101,10 +103,10 @@ export class TokenManager {
     console.log('Cleaned expired tokens');
   }
 
-  // 删除特定client的token
-  deleteToken(client_id: string): void {
+  // 删除特定device的token
+  deleteToken(deviceid: string): void {
     const tokens = this.readTokens();
-    delete tokens[client_id];
+    delete tokens[deviceid];
     this.saveTokens(tokens);
   }
 }

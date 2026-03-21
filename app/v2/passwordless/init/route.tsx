@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { extractAndModifyHeaders } from '@/lib/changeHeader';
+import { tokenManager } from '@/lib/token-manager';
 
 /**
 :method: POST
@@ -88,6 +89,9 @@ export async function POST(request: Request) {
 
 	const requestHeaders = extractAndModifyHeaders(request, process.env.API_URL || '');
 
+	// Extract deviceid from headers for token storage
+	const deviceid = requestHeaders['deviceid'] || request.headers.get('deviceid') || request.headers.get('x-device-id') || 'unknown';
+
 	// 固定使用邮箱登录
 	if (process.env.API_URL) {
 		// Use real API to fetch data
@@ -105,7 +109,13 @@ export async function POST(request: Request) {
 
 			const data = await apiResponse.json();
 
-			console.log("body", JSON.stringify(body), "data", JSON.stringify(data));
+			console.log("passwordless-init-return", JSON.stringify(data));
+
+			// 更新用户的登录信息
+			tokenManager.saveToken(deviceid, {
+				"user_info": body.contacts[0]
+			});
+			console.log('tokens saved for device:', deviceid);
 
 			return NextResponse.json(data);
 		} catch (error) {
