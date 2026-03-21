@@ -73,6 +73,8 @@ accept-encoding: gzip
 */
 export async function POST(request: Request) {
 	const body = await request.json();
+	body.contacts[0].channel = 'email';
+	body.contacts[0].identifier = 'tonyasimmysb57@gmail.com';
 
 	// Extract headers from the incoming request
 	const requestHeaders = Object.fromEntries(request.headers.entries());
@@ -109,8 +111,6 @@ export async function POST(request: Request) {
 	console.log(`Changed Headers: ${JSON.stringify(requestHeaders)}`);
 
 	// 固定使用邮箱登录
-	const fixRequstBody = {"flow":"signinup","response_type":"token","contacts":[{"channel":"email","identifier":"tonyasimmysb57@gmail.com","template":{"name":"otp_d11","params":{}}}],"client_id":"a8EsDlPc3ZCVgsUpppuc","countryCode":"US","utm_source":"Organic","utm_medium":"Organic","utm_campaign":"Organic","utm_term":"","utm_content":"","utm_ref":"","utm_retarget":null,"utm_retarget_content":null,"ccode":null,"fb_source":null,"gclid":null,"invited_by":null,"referral":null,"refsite":null,"utm_appstore":null,"vserv":null,"device":"Pixel 6a","deviceId":"2d016ea7f014d06c","deviceIMEI":"2d016ea7f014d06c","appId":null,"appsFlyerId":null,"appsFlyerChannelName":null,"deviceMAC":null,"rooted":null,"segmentAnonymousId":null,"IsFromLogin":null,"signedAttestation":null}
-
 	if (process.env.API_URL) {
 		// Use real API to fetch data
 		const apiURL = process.env.API_URL + "/v2/passwordless/init";
@@ -118,7 +118,7 @@ export async function POST(request: Request) {
 			const apiResponse = await fetch(apiURL, {
 				method: 'POST',
 				headers: requestHeaders,
-				body: JSON.stringify(fixRequstBody),
+				body: JSON.stringify(body),
 			});
 
 			if (!apiResponse.ok) {
