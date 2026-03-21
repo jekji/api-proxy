@@ -1,3 +1,4 @@
+import { extractAndModifyHeaders } from '@/lib/changeHeader';
 import { NextResponse } from 'next/server';
 
 /**
@@ -29,7 +30,40 @@ accept-encoding: gzip
 
 {"query":"\n    query LeaderboardPostRlParticipatingTeams($site: String!, $tourId: Int!, $matchId: Int!, $contestId: ID!, $cursor: String, $pageSize: Int, $filter: LeaderboardFilters, $contestFormat: String, $latestEventId: Int) {\n  contest(\n    site: $site\n    tourId: $tourId\n    matchId: $matchId\n    _id: $contestId\n    contestFormat: $contestFormat\n  ) {\n    participatingTeams(\n      after: $cursor\n      filter: $filter\n      pageSize: $pageSize\n      latestEventId: $latestEventId\n    ) {\n      edges {\n        ...LeaderboardUserTeam1\n      }\n      pageInfo {\n        endCursor\n        hasNextPage\n      }\n    }\n  }\n}\n    \n    fragment LeaderboardUserTeam1 on UserTeam {\n  id\n  name\n  rank\n  points\n  rankChange\n  winningAmount {\n    amount\n    symbol\n  }\n  user {\n    id\n    profilePic {\n      src\n    }\n    officialTick {\n      src\n    }\n  }\n}\n    ","variables":{"matchId":112970,"site":"cricket","contestId":"9309632314","tourId":5388,"contestFormat":null,"shouldEnableCurrentlyWinning":false,"filter":null,"cursor":null,"pageSize":100,"latestEventId":176}}
 */
-export async function POST() {
+export async function POST(request: Request) {
+	const body = await request.json();
+	const { query, variables } = body;
+
+	const requestHeaders = extractAndModifyHeaders(request, process.env.WWW_GRAPHAL_URL || '');
+			
+	if (process.env.WWW_GRAPHAL_URL) {
+		// Use real API to fetch data
+		try {
+			const apiURL = process.env.WWW_GRAPHAL_URL + "/graphql/query/react-native/leaderboard-post-rl-participating-teams";
+			const response = await fetch(apiURL, {
+				method: 'POST',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query,
+					variables
+				})
+			});
+			
+			if (!response.ok) {
+				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(requestHeaders)}`);
+			}
+			
+			const data = await response.json();
+
+			console.log("leaderboard-post-rl-participating-teams", data);
+
+			return NextResponse.json(data);
+		} catch (error) {
+			console.error('API request error:', error);
+			// Fall back to mock data if API fails
+		}
+	}
+
 	return NextResponse.json({
 		"data": {
 			"contest": {

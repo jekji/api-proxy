@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { extractAndModifyHeaders } from '@/lib/changeHeader';
 import { tokenManager } from '@/lib/token-manager';
 
 /**
@@ -33,42 +34,7 @@ export async function POST(request: Request) {
 
 	const { client_id, state, otp } = body;
 
-	// Extract headers from the incoming request
-	const requestHeaders = Object.fromEntries(request.headers.entries());
-
-	console.log(`Origin Headers: ${JSON.stringify(requestHeaders)}`);
-
-	requestHeaders['atlas'] = 'IN';
-	requestHeaders['locale'] = 'en-US';
-
-	requestHeaders['host'] = process.env.API_URL.replace('https://', '').replace('http://', '');
-
-	// 移除不需要的headers
-	const headersToRemove = [
-		'cdn-loop',
-		'cf-connecting-ip',
-		'cf-ipcountry',
-		'cf-ray',
-		'cf-visitor',
-		'x-app-version-name',
-		'x-forwarded-for',
-		'x-forwarded-host',
-		'x-forwarded-port',
-		'x-forwarded-proto',
-		'x-manufacturer',
-		'x-original-uri',
-		'x-os-type',
-		'x-os-version',
-		'x-real-ip',
-		"accept-encoding",
-		"accept",
-		"content-length",
-		'connection'
-	];
-
-	headersToRemove.forEach(key => delete requestHeaders[key]);
-
-	console.log(`Changed Headers: ${JSON.stringify(requestHeaders)}`);
+	const requestHeaders = extractAndModifyHeaders(request, process.env.API_URL || '');
 
 	if (process.env.API_URL) {
 		// Use real API to fetch data

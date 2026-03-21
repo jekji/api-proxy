@@ -1,5 +1,6 @@
 import { BASEHEADERS } from '@/constants';
 import { NextResponse } from 'next/server';
+import { extractAndModifyHeaders } from '@/lib/changeHeader';
 
 /**
 :method: POST
@@ -58,13 +59,7 @@ export async function POST(request: Request) {
 	const body = await request.json();
 	const { query, variables } = body;
 	
-	// Extract headers from the incoming request
-	// const requestHeaders = Object.fromEntries(request.headers.entries());
-	
-	// requestHeaders['atlas'] = 'IN';
-	// requestHeaders['locale'] = 'en-US';
-
-	// console.log(`Headers: ${JSON.stringify(requestHeaders)}`);
+	const requestHeaders = extractAndModifyHeaders(request, process.env.WWW_GRAPHAL_URL || '');
 	
 	if (process.env.WWW_GRAPHAL_URL) {
 		// Use real API to fetch data
@@ -72,7 +67,7 @@ export async function POST(request: Request) {
 		try {
 			const response = await fetch(apiURL, {
 				method: 'POST',
-				headers: BASEHEADERS, //requestHeaders,
+				headers: requestHeaders,
 				body: JSON.stringify({
 					query,
 					variables
@@ -86,6 +81,9 @@ export async function POST(request: Request) {
 			}
 			
 			const data = await response.json();
+
+			console.log("my-teams-pre-rl-query", data);
+
 			return NextResponse.json(data);
 		} catch (error) {
 			console.error(`API request failed. URL: ${apiURL}, error: `, error);

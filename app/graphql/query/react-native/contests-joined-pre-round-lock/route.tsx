@@ -1,5 +1,6 @@
 import { BASEHEADERS } from '@/constants';
 import { NextResponse } from 'next/server';
+import { extractAndModifyHeaders } from '@/lib/changeHeader';
 
 /**
 :method: POST
@@ -45,6 +46,8 @@ cookie: __refreshToken=HnwZbqZGEOGRjPOhPtgpE0R8zkKWTE9u; dh_user_id=4c1e2720-209
 export async function POST(request: Request) {
 	const body = await request.json();
 	const { query, variables } = body;
+
+	const requestHeaders = extractAndModifyHeaders(request, process.env.WWW_GRAPHAL_URL || '');
 	
 	if (process.env.WWW_GRAPHAL_URL) {
 		// Use real API to fetch data
@@ -52,7 +55,7 @@ export async function POST(request: Request) {
 			const apiURL = process.env.WWW_GRAPHAL_URL + "/graphql/query/react-native/contests-joined-pre-round-lock";
 			const response = await fetch(apiURL, {
 				method: 'POST',
-				headers: BASEHEADERS,
+				headers: requestHeaders,
 				body: JSON.stringify({
 					query,
 					variables
@@ -62,10 +65,13 @@ export async function POST(request: Request) {
 			});
 			
 			if (!response.ok) {
-				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(BASEHEADERS)}`);
+				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(requestHeaders)}`);
 			}
 			
 			const data = await response.json();
+
+			console.log("contests-joined-pre-round-lock", data);
+
 			return NextResponse.json(data);
 		} catch (error) {
 			console.error('API request error:', error);

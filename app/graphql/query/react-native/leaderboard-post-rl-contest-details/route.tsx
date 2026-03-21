@@ -1,3 +1,4 @@
+import { extractAndModifyHeaders } from '@/lib/changeHeader';
 import { NextResponse } from 'next/server';
 
 /**
@@ -29,7 +30,40 @@ accept-encoding: gzip
 
 {"query":"\n    query LeaderboardPostRlContestDetails($site: String!, $tourId: Int!, $matchId: Int!, $contestId: ID!, $contestFormat: String, $shouldEnableCurrentlyWinning: Boolean = false, $latestEventId: Int = -1, $shouldQueryUpdatedAt: Boolean = true) {\n  contest(\n    site: $site\n    tourId: $tourId\n    matchId: $matchId\n    _id: $contestId\n    contestFormat: $contestFormat\n  ) {\n    myTeams(\n      isCurrentlyWinningEnabled: $shouldEnableCurrentlyWinning\n      latestEventId: $latestEventId\n    ) {\n      ...LeaderboardMyTeamPostRl\n      isInWinningZone\n    }\n    ...ContestDetailsPostRl\n  }\n}\n    \n    fragment LeaderboardMyTeamPostRl on UserTeam {\n  id\n  name\n  rank\n  points\n  rankChange\n  winningAmount {\n    amount\n    symbol\n  }\n  user {\n    id\n    profilePic {\n      src\n    }\n    officialTick {\n      src\n    }\n    userType\n  }\n}\n    \n\n    fragment ContestDetailsPostRl on Contest {\n  sameTeamRefund {\n    refundStatus {\n      status\n      label\n      message\n    }\n  }\n  leaderboardOverStamp @include(if: $shouldQueryUpdatedAt) {\n    lastCalcAt\n  }\n  contestSize\n  currentSize\n  isPartnerContest\n  id\n  hasJoined\n  numberOfWinners\n  contestType\n  isMultipleEntry\n  contestCategory\n  entryFee {\n    amount\n  }\n  prizeAmount {\n    amount\n  }\n  match {\n    name\n    status\n    startTime\n    substitutionInfo {\n      isTeamCompareActive\n      teamCompareText\n    }\n  }\n}\n    ","variables":{"matchId":112970,"site":"cricket","contestId":"9309632314","tourId":5388,"contestFormat":null,"shouldEnableCurrentlyWinning":false,"filter":null,"shouldQueryUpdatedAt":true,"latestEventId":176}}
 */
-export async function POST() {
+export async function POST(request: Request) {
+	const body = await request.json();
+	const { query, variables } = body;
+
+	const requestHeaders = extractAndModifyHeaders(request, process.env.WWW_GRAPHAL_URL || '');
+			
+	if (process.env.WWW_GRAPHAL_URL) {
+		// Use real API to fetch data
+		try {
+			const apiURL = process.env.WWW_GRAPHAL_URL + "/graphql/query/react-native/leaderboard-post-rl-contest-details";
+			const response = await fetch(apiURL, {
+				method: 'POST',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query,
+					variables
+				})
+			});
+			
+			if (!response.ok) {
+				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(requestHeaders)}`);
+			}
+			
+			const data = await response.json();
+
+			console.log("leaderboard-post-rl-contest-details", data);
+
+			return NextResponse.json(data);
+		} catch (error) {
+			console.error('API request error:', error);
+			// Fall back to mock data if API fails
+		}
+	}
+
 	return NextResponse.json({
 		"data": {
 			"contest": {

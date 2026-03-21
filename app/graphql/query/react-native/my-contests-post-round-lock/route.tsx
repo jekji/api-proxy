@@ -1,3 +1,4 @@
+import { extractAndModifyHeaders } from '@/lib/changeHeader';
 import { NextResponse } from 'next/server';
 
 /**
@@ -60,7 +61,39 @@ accept-encoding: gzip
 */
 export async function POST(request: Request) {
 	const body = await request.json();
-	const { variables } = body;
+	const { query, variables } = body;
+
+	const requestHeaders = extractAndModifyHeaders(request, process.env.WWW_GRAPHAL_URL || '');
+		
+	if (process.env.WWW_GRAPHAL_URL) {
+		// Use real API to fetch data
+		try {
+			const apiURL = process.env.WWW_GRAPHAL_URL + "/graphql/query/react-native/my-contests-post-round-lock";
+			const response = await fetch(apiURL, {
+				method: 'POST',
+				headers: requestHeaders,
+				body: JSON.stringify({
+					query,
+					variables
+				}),
+				// Next.js 特有缓存配置：每 60 秒刷新一次数据
+				next: { revalidate: 60 }
+			});
+			
+			if (!response.ok) {
+				throw new Error(`API request failed: ${response.status}, url: ${apiURL}, headers: ${JSON.stringify(requestHeaders)}`);
+			}
+			
+			const data = await response.json();
+
+			console.log("my-contests-post-round-lock", data);
+			
+			return NextResponse.json(data);
+		} catch (error) {
+			console.error('API request error:', error);
+			// Fall back to mock data if API fails
+		}
+	}
 
 	const matchId = variables?.matchId;
 
