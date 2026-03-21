@@ -27,6 +27,7 @@ content-type: application/json
 content-length: 435
 accept-encoding: gzip
 
+{"query":"\n    query AdsOffers($slug: String!, $bannerSize: Size, $types: [FeedBannerType!], $utmParams: BannerUtmParams, $contestId: ID, $roundId: Int, $tourId: Int) {\n  site(slug: $slug) {\n    slug\n    promotionFeedBanners(\n      bannerSize: $bannerSize\n      types: $types\n      utmParams: $utmParams\n      contestId: $contestId\n      roundId: $roundId\n      tourId: $tourId\n    ) {\n      id\n      redirectUrl\n      redirectionType\n      isExternal\n      title\n      artwork {\n        src\n      }\n      companyName\n    }\n  }\n}\n    ","variables":{"bannerSize":"SMALL","types":"ADS","contestId":"9320412454","roundId":112925,"tourId":5380,"utmParams":{"utmSource":"Organic","utmCampaign":"Organic","utmTerm":"","utmMedium":"","utmRef":0,"utmContent":"Organic"},"slug":"cricket"}}
 
 */
 export async function POST(request: Request) {
@@ -63,5 +64,42 @@ export async function POST(request: Request) {
 		}
 	}
 
-	return NextResponse.json({});
+	return NextResponse.json({
+		"data": null, 
+		"errors": [
+			{
+				"message": "We're having trouble loading this page. Please try again in some time.", 
+				"path": [
+					"site"
+				], 
+				"extensions": {
+					"code": "SUBREQUEST_HTTP_ERROR", 
+					"service": "platform-gql", 
+					"reason": "error trying to connect: dns error: no record found for Query { name: Name(\"platform-gql.dream11.local.\"), query_type: AAAA, query_class: IN }"
+				}, 
+				"status": 500, 
+				"error": { }
+			}
+		], 
+		"extensions": {
+			"valueCompletion": [
+				{
+					"message": "Cannot return null for non-nullable field Site.promotionFeedBanners", 
+					"path": [
+						"site"
+					], 
+					"status": null, 
+					"error": { }
+				}, 
+				{
+					"message": "Cannot return null for non-nullable field Site!.site", 
+					"path": [
+						"site"
+					], 
+					"status": null, 
+					"error": { }
+				}
+			]
+		}
+	});
 }
