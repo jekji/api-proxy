@@ -5,7 +5,7 @@ import { extractAndModifyHeaders } from '@/lib/changeHeader';
 export async function GET(request: Request) {
 	const body = await request.json();
 
-	const requestHeaders = extractAndModifyHeaders(request);
+	const requestHeaders = extractAndModifyHeaders(request, process.env.API_URL || '');
 
 	if (process.env.API_URL) {
 		// Use real API to fetch data
@@ -23,7 +23,7 @@ export async function GET(request: Request) {
 
 			const data = await apiResponse.json();
 
-			console.log("body", JSON.stringify(body), "data", JSON.stringify(data));
+			console.log("games", data);
 
 			return NextResponse.json(data);
 		} catch (error) {
