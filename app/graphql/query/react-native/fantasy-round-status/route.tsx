@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 
 /**
 :method: POST
-:path: /graphql/query/react-native/contests-joined
+:path: /graphql/query/react-native/fantasy-round-status
 :authority: www.dream11.com
 :scheme: https
 accept: application/json
@@ -28,7 +28,6 @@ content-type: application/json
 content-length: 435
 accept-encoding: gzip
 
-{"query":"\n    query ContestsJoined($site: String!, $matchId: Int!, $slotType: [SlotTypeContest!] = [], $promotionalMediaEnabled: Boolean = true) {\n  match(site: $site, id: $matchId) {\n    joinedContestPaginated(showInsuranceIcon: false, joinedContestCount: 500) {\n      edges {\n        id\n        contestName\n        convertedContestName\n        contestType\n        campaignSlot(slotType: $slotType) @include(if: $promotionalMediaEnabled) {\n          slotType\n          mediaType\n          mediaUrl\n        }\n        convertedCampaignSlot(slotType: $slotType) @include(if: $promotionalMediaEnabled) {\n          slotType\n          mediaType\n          mediaUrl\n        }\n        prizeDisplayText\n        prizeAmount {\n          amount\n          symbol\n        }\n        myTeams {\n          id\n          name\n          rank\n          rankChange\n          points\n        }\n      }\n      pageInfo {\n        endCursor\n        hasNextPage\n      }\n    }\n  }\n}\n    ","variables":{"site":"cricket","matchId":112925,"slotType":["CONTEST_CARD_PRE_RL","INTL_CONTEST_CARD_PRE_RL"],"promotionalMediaEnabled":true}}
 
 */
 export async function POST(request: Request) {
@@ -40,7 +39,7 @@ export async function POST(request: Request) {
 	if (process.env.WWW_GRAPHAL_URL) {
 		// Use real API to fetch data
 		try {
-			const apiURL = process.env.WWW_GRAPHAL_URL + "/graphql/query/react-native/contests-joined";
+			const apiURL = process.env.WWW_GRAPHAL_URL + "/graphql/query/react-native/fantasy-round-status";
 			const response = await fetch(apiURL, {
 				method: 'POST',
 				headers: requestHeaders,
@@ -56,7 +55,7 @@ export async function POST(request: Request) {
 			
 			const data = await response.json();
 
-			console.log("requestBody", JSON.stringify(body), "contestsJoined", JSON.stringify(data));
+			console.log("requestBody", JSON.stringify(body), "fantasy-round-status", JSON.stringify(data));
 
 			return NextResponse.json(data);
 		} catch (error) {
@@ -65,40 +64,5 @@ export async function POST(request: Request) {
 		}
 	}
 
-	return NextResponse.json({
-		"data": {
-			"match": {
-				"joinedContestPaginated": {
-					"edges": [
-						{
-							"id": "9320412454", 
-							"contestName": "Free to Play", 
-							"convertedContestName": "Free To Play", 
-							"contestType": "public", 
-							"campaignSlot": null, 
-							"convertedCampaignSlot": null, 
-							"prizeDisplayText": "₹0", 
-							"prizeAmount": {
-								"amount": 0, 
-								"symbol": "₹"
-							}, 
-							"myTeams": [
-								{
-									"id": 1, 
-									"name": "TONYASI LEADERS", 
-									"rank": 34, 
-									"rankChange": "NONE", 
-									"points": 95
-								}
-							]
-						}
-					], 
-					"pageInfo": {
-						"endCursor": null, 
-						"hasNextPage": false
-					}
-				}
-			}
-		}
-	});
+	return NextResponse.json({});
 }
