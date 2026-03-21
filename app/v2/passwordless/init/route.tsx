@@ -108,7 +108,7 @@ export async function POST(request: Request) {
 
 	console.log(`Changed Headers: ${JSON.stringify(requestHeaders)}`);
 
-	if (process.env.API_URL && false) {
+	if (process.env.API_URL) {
 		// Use real API to fetch data
 		const apiURL = process.env.API_URL + "/v2/passwordless/init";
 		try {
