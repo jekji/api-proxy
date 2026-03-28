@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Certificate</title>
+    <style>
+        :root {
+            --dtc-blue: #0052FF;
+            --dtc-dark: #121212;
+            --text-main: #333333;
+            --border-color: #e0e4e8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-print-color-adjust: exact; }
+
+        body {
+            display: flex;
+            justify-content: center;
+            padding: 0px 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .a4-page {
+            padding: 25mm 10mm;
+            background: white;
+            position: relative;
+            color: var(--text-main);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid var(--dtc-blue);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        .brand-logo { font-size: 28px; font-weight: 800; color: var(--dtc-dark); letter-spacing: -1px; }
+        .brand-logo span { color: var(--dtc-blue); }
+
+        .doc-type { text-align: right; font-size: 12px; color: #777; line-height: 1.5; }
+
+        .title-section { margin-bottom: 40px; }
+        .title-section h1 { font-size: 24px; color: var(--dtc-dark); margin-bottom: 10px; }
+        .title-section p { font-size: 14px; color: #666; }
+
+        .details-table { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
+        .details-table th, .details-table td { padding: 18px; border-bottom: 1px solid var(--border-color); text-align: left; font-size: 15px; }
+        .details-table th { color: #888; font-weight: 500; width: 35%; }
+        .details-table td { color: var(--dtc-dark); font-weight: 600; }
+
+        .status-badge { color: #00b894; background: rgba(0, 184, 148, 0.1); padding: 4px 12px; border-radius: 4px; font-size: 13px; }
+
+        .legal-notice { font-size: 13px; line-height: 1.6; color: #777; background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 40px; }
+
+        .footer { margin-top: 60px; display: flex; justify-content: space-between; align-items: center; }
+        .auth-seal {
+            width: 120px; height: 120px; border: 2px solid #0052FF33; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; text-align: center;
+            font-size: 10px; color: var(--dtc-blue); transform: rotate(-10deg);
+            background: radial-gradient(circle, #fff 0%, #f0f4ff 100%);
+        }
+
+        .watermark {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 100px; color: rgba(0, 82, 255, 0.02); font-weight: 900; white-space: nowrap; pointer-events: none;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .a4-page { box-shadow: none; margin: 0; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="a4-page">
+        <div class="watermark">DTCPAY VERIFIED</div>
+
+        <header class="header">
+            <div class="brand-logo">dtc<span>pay</span></div>
+            <div class="doc-type">
+                Reference No: <span id="ref-no">DTC-20260318-0922</span><br>
+                Issued on: <span id="issued-date">2026-03-18</span>
+            </div>
+        </header>
+
+        <section class="title-section">
+            <h1>账户详情证明书</h1>
+            <p>Account Opening & Details Confirmation</p>
+        </section>
+
+        <table class="details-table">
+            <tr>
+                <th>账户持有人 (Account Holder)</th>
+                <td id="display-name">ZHANG SAN / 张三</td>
+            </tr>
+            <tr>
+                <th>客户 ID (Customer ID)</th>
+                <td id="display-id">DTC-UID-99281044</td>
+            </tr>
+            <tr>
+                <th>账户类型 (Account Type)</th>
+                <td>Digital Asset Business Account</td>
+            </tr>
+            <tr>
+                <th>注册时间 (Registration Date)</th>
+                <td id="display-reg-date">2026年03月18日</td>
+            </tr>
+            <tr>
+                <th>账户状态 (Account Status)</th>
+                <td><span class="status-badge">已认证 (Verified)</span></td>
+            </tr>
+            <tr>
+                <th>主要币种 (Base Currency)</th>
+                <td>USD / USDT</td>
+            </tr>
+        </table>
+
+        <div class="legal-notice">
+            <strong>重要提示 (Important Notice):</strong><br>
+            本证明文件由 dtcpay 系统自动生成。所有账户均经过 KYC/AML 合规审查。本文件内容仅供参考，不作为资产所有权的唯一凭证。
+        </div>
+
+        <div class="footer">
+            <div class="signature">
+                <p style="font-size: 14px; font-weight: bold;">Digital Treasure Center Compliance Team</p>
+                <p style="font-size: 12px; color: #999; margin-top: 5px;">Electronic verified document. No signature required.</p>
+            </div>
+            <div class="auth-seal">DTC PAY<br>COMPLIANCE<br>VERIFIED</div>
+        </div>
+    </div>
+
+    <script>
+        // 获取 URL 查询参数
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                name: params.get('name'),
+                id: params.get('id'),
+                date: params.get('date')
+            };
+        }
+
+        // 页面渲染逻辑
+        window.onload = function() {
+            const data = getQueryParams();
+            const today = new Date().toISOString().split('T')[0];
+
+            if (data.name) {
+                document.getElementById('display-name').innerText = data.name;
+            }
+            if (data.id) {
+                document.getElementById('display-id').innerText = data.id;
+                document.getElementById('ref-no').innerText = 'DTC-' + data.id.split('-').pop() + '-' + today.replace(/-/g, '');
+            }
+            if (data.date) {
+                document.getElementById('display-reg-date').innerText = data.date;
+            }
+            
+            // 自动更新签发日期为当天
+            document.getElementById('issued-date').innerText = today;
+        };
+    </script>
+
+</body>
+</html>
