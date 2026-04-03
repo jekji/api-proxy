@@ -42,7 +42,11 @@ const nextConfig = {
       {
         source: '/api/:path*',
         destination: 'https://static.apollox.com/api/:path*'
-      }
+      },
+      {
+        source: "/uploads/:path*",
+        destination: 'http://35.194.28.76:3000/uploads/:path*', // Proxy to Backend
+      },
     ]
   }
 }
